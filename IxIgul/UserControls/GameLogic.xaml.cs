@@ -25,7 +25,7 @@ namespace IxIgul.UserControls
             WhoWillPlayFirstMessage();
         }
 
-        // p2
+        // pleyer2
         #region TieGame
         private void GameTied(ref string pl, ref string co)
         {
@@ -510,7 +510,7 @@ namespace IxIgul.UserControls
             CheckWinner(ref pl1, ref pl2);
         }
         #endregion
-        // p2
+        // pleyer2
 
         // cp
         #region Cp Random Place
