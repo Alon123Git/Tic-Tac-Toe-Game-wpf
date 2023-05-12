@@ -18,8 +18,5 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
-       
-
     </Grid>
 </UserControl>

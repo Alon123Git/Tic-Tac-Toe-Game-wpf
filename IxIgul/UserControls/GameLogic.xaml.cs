@@ -11,21 +11,29 @@ namespace IxIgul.UserControls
     /// </summary>
     public partial class GameLogic : UserControl
     {
+        #region Varibles
         p2 plar = new();
         oponent opnt = new();
-        string pl1 = "O";
-        string pl2 = "X";
         bool oponent = true;
+        int player1Score;
+        int player2Score;
+        bool level1 = false;
+        bool level2 = false;
+        bool level3 = false;
+        #endregion
 
+        #region Constructor
         public GameLogic()
         {
             InitializeComponent();
-
-            CheckWinner(ref pl1, ref pl2);
+            Levels.Visibility = Visibility.Hidden;
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
             WhoWillPlayFirstMessage();
         }
+        #endregion
 
-        // pleyer2
+
+        // pleyer2 logic
         #region TieGame
         private void GameTied(ref string pl, ref string co)
         {
@@ -41,12 +49,12 @@ namespace IxIgul.UserControls
             {
                 MessageBox.Show("The screen is full, so the result is tie", "CLEAN THE SCREEN",
                     MessageBoxButton.OK, MessageBoxImage.None);
-                score();
+                WindowScore();
 
                 MessageBox.Show("Let me clean the screen\n: - )", "CLEAN THE SCREEN",
                     MessageBoxButton.OK, MessageBoxImage.None);
                 // clear board
-                ClearBoard(ref pl1, ref pl2);
+                ClearBoard(ref plar.Shape, ref opnt.Shape);
             }
         }
         #endregion
@@ -78,13 +86,30 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-        #region Score
-        private void score()
+        #region Score In Window
+        private void WindowScore()
         {
             MessageBox.Show("The score is: \nplayer1 - " + plar.Score + "\nplayer2 - " + opnt.Score, "SCORE",
                  MessageBoxButton.OK, MessageBoxImage.Information);
             FollowingStartingPlayerMessage();
-            ResetButtonsBackgroundColor();
+        }
+        #endregion
+
+        #region Consistant Score
+        private void ConsistantScore()
+        {
+            if (plar.IsWinner)
+            {
+                player1Score = int.Parse(Player1Score.Text);
+                player1Score++;
+                Player1Score.Text = player1Score.ToString();
+            }
+            else if (opnt.IsWinner)
+            {
+                player2Score = int.Parse(Player2Score.Text);
+                player2Score++;
+                Player2Score.Text = player2Score.ToString();
+            }
         }
         #endregion
 
@@ -113,15 +138,17 @@ namespace IxIgul.UserControls
         private void FollowingStartingPlayerMessage()
         {
             MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - player2 start\nIf you want to exit - cancel", "CHOOSE WHO PLAY FIRST",
-           MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
                 plar.IsPlay = true;
+                opnt.IsPlay = false;
             }
             else if (result == MessageBoxResult.No)
             {
                 opnt.IsPlay = true;
+                plar.IsPlay = false;
             }
             else if (result == MessageBoxResult.Cancel)
             {
@@ -137,26 +164,13 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 plar.IsPlay = true;
+                opnt.IsPlay = false;
             }
             else if (result == MessageBoxResult.No)
             {
                 opnt.IsPlay = true;
+                plar.IsPlay = false;
             }
-        }
-        #endregion
-
-        #region buttons background colors reset
-        private void ResetButtonsBackgroundColor()
-        {
-            btn1.Background = Brushes.White;
-            btn2.Background = Brushes.White;
-            btn3.Background = Brushes.White;
-            btn4.Background = Brushes.White;
-            btn5.Background = Brushes.White;
-            btn6.Background = Brushes.White;
-            btn7.Background = Brushes.White;
-            btn8.Background = Brushes.White;
-            btn9.Background = Brushes.White;
         }
         #endregion
 
@@ -173,8 +187,9 @@ namespace IxIgul.UserControls
             {
                 MessageBox.Show(player2 + " win!!", "WINNER", MessageBoxButton.OK, MessageBoxImage.None);
             }
-            score();
-            ClearBoard(ref pl1, ref pl2);
+            WindowScore();
+            ConsistantScore();
+            ClearBoard(ref plar.Shape, ref opnt.Shape);
         }
         #endregion
 
@@ -185,12 +200,14 @@ namespace IxIgul.UserControls
             if ((string)btn1.Content == pl && (string)btn2.Content == pl && (string)btn3.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
             }
             else if ((string)btn4.Content == pl && (string)btn5.Content == pl && (string)btn6.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -198,6 +215,7 @@ namespace IxIgul.UserControls
             else if ((string)btn7.Content == pl && (string)btn8.Content == pl && (string)btn9.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -205,6 +223,7 @@ namespace IxIgul.UserControls
             else if ((string)btn1.Content == pl && (string)btn4.Content == pl && (string)btn7.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -212,6 +231,7 @@ namespace IxIgul.UserControls
             else if ((string)btn2.Content == pl && (string)btn5.Content == pl && (string)btn8.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -219,6 +239,7 @@ namespace IxIgul.UserControls
             else if ((string)btn3.Content == pl && (string)btn6.Content == pl && (string)btn9.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -226,6 +247,7 @@ namespace IxIgul.UserControls
             else if ((string)btn1.Content == pl && (string)btn5.Content == pl && (string)btn9.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -233,6 +255,7 @@ namespace IxIgul.UserControls
             else if ((string)btn3.Content == pl && (string)btn5.Content == pl && (string)btn7.Content == pl)
             {
                 plar.IsWinner = true;
+                opnt.IsWinner = false;
                 plar.Score++;
                 isWin();
 
@@ -242,6 +265,7 @@ namespace IxIgul.UserControls
             if ((string)btn1.Content == co && (string)btn2.Content == co && (string)btn3.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -249,6 +273,7 @@ namespace IxIgul.UserControls
             else if ((string)btn4.Content == co && (string)btn5.Content == co && (string)btn6.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -256,6 +281,7 @@ namespace IxIgul.UserControls
             else if ((string)btn7.Content == co && (string)btn8.Content == co && (string)btn9.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -263,6 +289,7 @@ namespace IxIgul.UserControls
             else if ((string)btn1.Content == co && (string)btn4.Content == co && (string)btn7.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -270,6 +297,7 @@ namespace IxIgul.UserControls
             else if ((string)btn2.Content == co && (string)btn5.Content == co && (string)btn8.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -277,6 +305,7 @@ namespace IxIgul.UserControls
             else if ((string)btn3.Content == co && (string)btn6.Content == co && (string)btn9.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -284,6 +313,7 @@ namespace IxIgul.UserControls
             else if ((string)btn1.Content == co && (string)btn5.Content == co && (string)btn9.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
 
@@ -291,10 +321,11 @@ namespace IxIgul.UserControls
             else if ((string)btn3.Content == co && (string)btn5.Content == co && (string)btn7.Content == co)
             {
                 opnt.IsWinner = true;
+                plar.IsWinner = false;
                 opnt.Score++;
                 isWin();
             }
-            GameTied(ref pl1, ref pl2);
+            GameTied(ref plar.Shape, ref opnt.Shape);
 
             return false;
         }
@@ -307,22 +338,24 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn1.Content = pl1;
+                    btn1.Content = plar.Shape;
                 }
                 else
                 {
-                    btn1.Content = pl2;
+                    btn1.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay; // change turn
             }
             else if (oponent == false)
             {
-                btn1.Content = pl1;
-                CpPlace(ref pl2);
+                btn1.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn1.IsEnabled = false;
+
             //btn1.Background = Brushes.LightGreen;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
 
@@ -332,21 +365,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn2.Content = pl1;
+                    btn2.Content = plar.Shape;
                 }
                 else
                 {
-                    btn2.Content = pl2;
+                    btn2.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn2.Content = pl1;
-                CpPlace(ref pl2);
+                btn2.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn2.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -355,21 +389,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn3.Content = pl1;
+                    btn3.Content = plar.Shape;
                 }
                 else
                 {
-                    btn3.Content = pl2;
+                    btn3.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn3.Content = pl1;
-                CpPlace(ref pl2);
+                btn3.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn3.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -378,21 +413,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn4.Content = pl1;
+                    btn4.Content = plar.Shape;
                 }
                 else
                 {
-                    btn4.Content = pl2;
+                    btn4.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn4.Content = pl1;
-                CpPlace(ref pl2);
+                btn4.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn4.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -401,21 +437,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn5.Content = pl1;
+                    btn5.Content = plar.Shape;
                 }
                 else
                 {
-                    btn5.Content = pl2;
+                    btn5.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn5.Content = pl1;
-                CpPlace(ref pl2);
+                btn5.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn5.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
@@ -424,21 +461,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn6.Content = pl1;
+                    btn6.Content = plar.Shape;
                 }
                 else
                 {
-                    btn6.Content = pl2;
+                    btn6.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn6.Content = pl1;
-                CpPlace(ref pl2);
+                btn6.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn6.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
@@ -447,21 +485,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn7.Content = pl1;
+                    btn7.Content = plar.Shape;
                 }
                 else
                 {
-                    btn7.Content = pl2;
+                    btn7.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn7.Content = pl1;
-                CpPlace(ref pl2);
+                btn7.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn7.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
@@ -470,21 +509,22 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn8.Content = pl1;
+                    btn8.Content = plar.Shape;
                 }
                 else
                 {
-                    btn8.Content = pl2;
+                    btn8.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn8.Content = pl1;
-                CpPlace(ref pl2);
+                btn8.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn8.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
@@ -493,81 +533,168 @@ namespace IxIgul.UserControls
             {
                 if (plar.IsPlay)
                 {
-                    btn9.Content = pl1;
+                    btn9.Content = plar.Shape;
                 }
                 else
                 {
-                    btn9.Content = pl2;
+                    btn9.Content = opnt.Shape;
                 }
                 plar.IsPlay = !plar.IsPlay;
             }
             else if (oponent == false)
             {
-                btn9.Content = pl1;
-                CpPlace(ref pl2);
+                btn9.Content = plar.Shape;
+                CheckWinner(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel1(ref opnt.Shape);
             }
             btn9.IsEnabled = false;
-            CheckWinner(ref pl1, ref pl2);
+            CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
         #endregion
-        // pleyer2
+        // pleyer2 logic
 
-        // cp
-        #region Cp Random Place
-        private void CpPlace(ref string opn)
+        // cp logic
+        #region Cp Random Place levels
+        private void CpPlaceLevel1(ref string opn)
         {
             Random rnd = new Random();
-            int randomButtonIndex = rnd.Next(1, 10);
-
-            switch (randomButtonIndex)
+            int randomButtonIndex;
+            while (true)
             {
-                case 1:
-                    btn1.Content = opn;
-                    btn1.IsEnabled = false;
-                    break;
-                case 2:
-                    btn2.Content = opn;
-                    btn2.IsEnabled = false;
-                    break;
-                case 3:
-                    btn3.Content = opn;
-                    btn3.IsEnabled = false;
-                    break;
-                case 4:
-                    btn4.Content = opn;
-                    btn4.IsEnabled = false;
-                    break;
-                case 5:
-                    btn5.Content = opn;
-                    btn5.IsEnabled = false;
-                    break;
-                case 6:
-                    btn6.Content = opn;
-                    btn6.IsEnabled = false;
-                    break;
-                case 7:
-                    btn7.Content = opn;
-                    btn7.IsEnabled = false;
-                    break;
-                case 8:
-                    btn8.Content = opn;
-                    btn8.IsEnabled = false;
-                    break;
-                case 9:
-                    btn9.Content = opn;
-                    btn9.IsEnabled = false;
-                    break;
+                randomButtonIndex = rnd.Next(1, 10);
+                if (randomButtonIndex == 1)
+                {
+                    if (btn1.Content == "" || btn1.Content == null)
+                    {
+                        btn1.Content = opn;
+                        btn1.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 2)
+                {
+                    if (btn2.Content == "" || btn2.Content == null)
+                    {
+                        btn2.Content = opn;
+                        btn2.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 3)
+                {
+                    if (btn3.Content == "" || btn3.Content == null)
+                    {
+                        btn3.Content = opn;
+                        btn3.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 4)
+                {
+                    if (btn4.Content == "" || btn4.Content == null)
+                    {
+                        btn4.Content = opn;
+                        btn4.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 5)
+                {
+                    if (btn5.Content == "" || btn5.Content == null)
+                    {
+                        btn5.Content = opn;
+                        btn5.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 6)
+                {
+                    if (btn6.Content == "" || btn6.Content == null)
+                    {
+                        btn6.Content = opn;
+                        btn6.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 7)
+                {
+                    if (btn7.Content == "" || btn7.Content == null)
+                    {
+                        btn7.Content = opn;
+                        btn7.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 8)
+                {
+                    if (btn8.Content == "" || btn8.Content == null)
+                    {
+                        btn8.Content = opn;
+                        btn8.IsEnabled = false;
+                        break;
+                    }
+                }
+                else if (randomButtonIndex == 9)
+                {
+                    if (btn9.Content == "" || btn9.Content == null)
+                    {
+                        btn9.Content = opn;
+                        btn9.IsEnabled = false;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        private void CpPlaceLevel2()
+        {
+            
+        }
+
+        private void CpPlaceLevel3()
+        {
+            if (btn1.Content == plar.Shape && btn2.Content == plar.Shape)
+            {
+                btn3.Content = opnt.Shape;
+            }
+            else if (btn4.Content == plar.Shape && btn5.Content == plar.Shape)
+            {
+                btn5.Content = opnt.Shape;
+            }
+            else if (btn7.Content == plar.Shape && btn8.Content == plar.Shape)
+            {
+                btn9.Content = opnt.Shape;
+            }
+            else if (btn1.Content == plar.Shape && btn4.Content == plar.Shape)
+            {
+                btn7.Content = opnt.Shape;
+            }
+            else if (btn2.Content == plar.Shape && btn5.Content == plar.Shape)
+            {
+                btn8.Content = opnt.Shape;
+            }
+            else if (btn3.Content == plar.Shape && btn6.Content == plar.Shape)
+            {
+                btn9.Content = opnt.Shape;
+            }
+            else if (btn1.Content == plar.Shape && btn5.Content == plar.Shape)
+            {
+                btn9.Content= opnt.Shape;
+            }
+            else if (btn3.Content == plar.Shape && btn5.Content == plar.Shape)
+            {
+                btn7.Content = opnt.Shape;
             }
         }
         #endregion
-        // cp
+        // cp logic
 
-        // menu bar
+        // menu bar logic
         #region menu bar
         private void New_Game_Click(object sender, RoutedEventArgs e)
         {
             NewGameStartingPlayerMessage();
-            ClearBoard(ref pl1, ref pl2);
+            ClearBoard(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -578,34 +705,40 @@ namespace IxIgul.UserControls
         private void p2Play_Click(object sender, RoutedEventArgs e)
         {
             oponent = true;
-            ClearBoard(ref pl1, ref pl2);
+            ClearBoard(ref plar.Shape, ref opnt.Shape);
             MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - player2 start", "CHOOSE WHO PLAY FIRST",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 plar.IsPlay = true;
+                opnt.IsPlay = false;
             }
             else if (result == MessageBoxResult.No)
             {
                 opnt.IsPlay = true;
+                plar.IsPlay = false;
             }
+            Levels.Visibility = Visibility.Hidden;
         }
 
         private void cpPlay_Click(object sender, RoutedEventArgs e)
         {
             oponent = false;
-            ClearBoard(ref pl1, ref pl2);
+            ClearBoard(ref plar.Shape, ref opnt.Shape);
             MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - cp start", "CHOOSE WHO PLAY FIRST",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 plar.IsPlay = true;
+                opnt.IsPlay = false;
             }
             else if (result == MessageBoxResult.No)
             {
                 opnt.IsPlay = true;
-                CpPlace(ref pl2);
+                plar.IsPlay = false;
+                CpPlaceLevel1(ref opnt.Shape);
             }
+            Levels.Visibility = Visibility.Visible;
         }
 
         #region buttons backgroune colors
@@ -633,6 +766,11 @@ namespace IxIgul.UserControls
             // change screen back ground color
             Screen.Background = Brushes.Yellow;
             // change screen back ground color
+
+            // change score rectengle color
+            scoreRec1.Fill = Brushes.LightBlue;
+            scoreRec2.Fill = Brushes.LightBlue;
+            // change score rectengle color
         }
         private void yellow_Click(object sender, RoutedEventArgs e)
         {
@@ -658,6 +796,11 @@ namespace IxIgul.UserControls
             // change screen back ground color
             Screen.Background = Brushes.Red;
             // change screen back ground color
+
+            // change score rectengle color
+            scoreRec1.Fill = Brushes.LightGray;
+            scoreRec2.Fill = Brushes.LightGray;
+            // change score rectengle color
         }
 
         private void red_Click(object sender, RoutedEventArgs e)
@@ -684,6 +827,11 @@ namespace IxIgul.UserControls
             // change screen back ground color
             Screen.Background = Brushes.LightBlue;
             // change screen back ground color
+
+            // change score rectengle color
+            scoreRec1.Fill = Brushes.Yellow;
+            scoreRec2.Fill = Brushes.Yellow;
+            // change score rectengle color
         }
 
         private void blue_Click(object sender, RoutedEventArgs e)
@@ -710,6 +858,11 @@ namespace IxIgul.UserControls
             // change screen back ground color
             Screen.Background = Brushes.LightGreen;
             // change screen back ground color
+
+            // change score rectengle color
+            scoreRec1.Fill = Brushes.Red;
+            scoreRec2.Fill = Brushes.Red;
+            // change score rectengle color
         }
 
         private void orange_Click(object sender, RoutedEventArgs e)
@@ -736,6 +889,11 @@ namespace IxIgul.UserControls
             // change screen back ground color
             Screen.Background = Brushes.LightPink;
             // change screen back ground color
+
+            // change score rectengle color
+            scoreRec1.Fill = Brushes.Blue;
+            scoreRec2.Fill = Brushes.Blue;
+            // change score rectengle color
         }
 
         private void white_Click(object sender, RoutedEventArgs e)
@@ -762,33 +920,81 @@ namespace IxIgul.UserControls
             // change screen back ground color
             Screen.Background = Brushes.White;
             // change screen back ground color
-        }
-        #endregion
 
+            // change score rectengle color
+            scoreRec1.Fill = Brushes.LightCoral;
+            scoreRec2.Fill = Brushes.LightCoral;
+            // change score rectengle color
+        }
         #endregion
 
         #region Choose Shape
-        /// <summary>
-        /// Choose 'X' or 'O'
-        /// </summary>
-        private void ChooseShape_Click(object sender, RoutedEventArgs e)
+        private void O_Shape_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("What shape do you want to play with?\nFor 'O' - yes\nFor 'X' - no", "CHOOSE SHAPE",
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            plar.Shape = "O";
+            opnt.Shape = "X";
+            NewGameStartingPlayerMessage();
+        }
 
-            if (result == MessageBoxResult.Yes)
-            {
-                pl1 = "O";
-                pl2 = "X";
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                pl1 = "X";
-                pl2 = "O";
-            }
+        private void X_Shape_Click(object sender, RoutedEventArgs e)
+        {
+            plar.Shape = "X";
+            opnt.Shape = "O";
             NewGameStartingPlayerMessage();
         }
         #endregion
-        //menu bar
+
+        #region Difficulty Level
+        private void Level1_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape);
+                NewGameStartingPlayerMessage();
+                if (opnt.IsPlay == true)
+                {
+                    CpPlaceLevel1(ref opnt.Shape);
+                }
+            }
+            level1 = true;
+        }
+
+        private void Level2_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape);
+                NewGameStartingPlayerMessage();
+                if (opnt.IsPlay == true)
+                {
+                    CpPlaceLevel1(ref opnt.Shape);
+                }
+            }
+            level2 = true;
+        }
+
+        private void Level3_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape);
+                NewGameStartingPlayerMessage();
+                if (opnt.IsPlay == true)
+                {
+                    CpPlaceLevel1(ref opnt.Shape);
+                }
+            }
+            level3 = true;
+        }
+        #endregion
+
+        #endregion
+        //menu bar logic
     }
 }

@@ -11,11 +11,13 @@ namespace IxIgul.DATA
         public bool IsPlay = false;
         public bool IsWinner;
         public int Score;
-        public data(bool isWinner, int score, bool isPlay)
+        public string Shape;
+        public data(bool isWinner, int score, bool isPlay, string shape)
         {
             IsPlay = isPlay;
             IsWinner = isWinner;
             Score = score;
+            Shape = shape;
         }
         public data() { }
     }

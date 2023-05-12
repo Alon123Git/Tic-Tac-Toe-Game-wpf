@@ -1,8 +1,3 @@
-C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.exe
-C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.deps.json
-C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.runtimeconfig.json
-C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.dll
-C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.pdb
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\IxIgul.csproj.AssemblyReference.cache
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\MainWindow.g.cs
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\UserControls\Board.g.cs
@@ -11,6 +6,11 @@ C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\App.g.cs
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\IxIgul_MarkupCompile.cache
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\IxIgul_MarkupCompile.lref
+C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.exe
+C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.deps.json
+C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.runtimeconfig.json
+C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.dll
+C:\Users\Alon\Desktop\IxIgul\IxIgul\bin\Debug\net6.0-windows\IxIgul.pdb
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\MainWindow.baml
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\UserControls\Board.baml
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\UserControls\GameLogic.baml

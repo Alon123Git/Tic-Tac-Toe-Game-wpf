@@ -12,7 +12,8 @@ namespace IxIgul.Players
         public bool IsPlay = false;
         public bool IsWinner;
         public int Score;
-        public p2(bool isWinner, int score, bool isPlay) : base(isWinner, score, isPlay) { }
+        public string Shape = "O";
+        public p2(bool isWinner, int score, bool isPlay, string shape) : base(isWinner, score, isPlay, shape) { }
 
         public p2() { }
     }
