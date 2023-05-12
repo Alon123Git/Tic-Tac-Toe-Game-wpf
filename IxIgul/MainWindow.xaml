@@ -26,10 +26,10 @@
         </Grid>
         <!--logic-->
 
-        <!--board-->
+        <!--board--><!--
         <Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
             <board:Board />
         </Grid>
-        <!--board-->
+        --><!--board-->
     </Grid>
 </Window>

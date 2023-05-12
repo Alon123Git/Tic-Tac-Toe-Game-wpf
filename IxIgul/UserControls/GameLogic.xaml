@@ -76,9 +76,12 @@
                         <MenuItem Header="X" Click="X_Shape_Click" />
                     </MenuItem>
                     <MenuItem x:Name="Levels" Header="Difficulty Level">
-                        <MenuItem Header="Level1" Click="Level1_Click" />
-                        <MenuItem Header="Level2" Click="Level2_Click" />
-                        <MenuItem Header="Level3" Click="Level3_Click" />
+                        <MenuItem Header="Level 1" Click="Level1_Click" />
+                        <MenuItem Header="Level 2" Click="Level2_Click" />
+                        <MenuItem Header="Level 3" Click="Level3_Click" />
+                        <MenuItem Header="Level 4" Click="Level4_Click" />
+                        <MenuItem Header="Level 5" Click="Level5_Click" />
+                        <MenuItem Header="Level 6" Click="Level6_Click" />
                     </MenuItem>
                     <MenuItem Header="change colors">
                         <MenuItem Header="yellow and green" Click="green_Click" />
