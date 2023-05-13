@@ -44,14 +44,14 @@
                        FontSize="20" HorizontalAlignment="Left"
                        VerticalAlignment="Center"></TextBlock>
             <!--main title-->
-            
+
             <!--second title-->
             <TextBlock Grid.Column="5" Grid.Row="1" Text="player1"
                        FontSize="15" HorizontalAlignment="Right"></TextBlock>
-            
+
             <TextBlock Grid.Column="7" Grid.Row="1" Text="player2"
                        FontSize="18" HorizontalAlignment="Left"></TextBlock>
-            
+
             <TextBlock Grid.Column="6" Grid.Row="1" 
                        Text="Tie" FontSize="15" 
                        HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -62,24 +62,24 @@
             <TextBlock x:Name="Player1Score" Grid.Column="5" 
                    Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
                    Text="0" FontSize="18"></TextBlock>
-            
+
             <TextBlock x:Name="tieScore" Grid.Row="2" Grid.Column="6" 
                        Text="0" FontSize="18" VerticalAlignment="Top" 
                        HorizontalAlignment="Center" >
             </TextBlock>
-            
+
             <TextBlock x:Name="Player2Score" Grid.Column="7" 
                    Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
                    Text="0" FontSize="15"></TextBlock>
-            <!--score number-->           
-            
+            <!--score number-->
+
             <!--rectengles-->
             <Rectangle x:Name="scoreRec1" Grid.Column="5" Grid.RowSpan="3"
                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Fill="LightCoral" Height="180" Width="10"></Rectangle>
+                    Fill="LightSlateGray" Height="180" Width="10"></Rectangle>
             <Rectangle x:Name="scoreRec2"  Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="3" 
                        HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                       Height="10" Width="220" Fill="LightCoral"></Rectangle>
+                       Height="10" Width="240" Fill="LightSlateGray"></Rectangle>
 
         </Grid>
         <!--score-->
@@ -95,8 +95,7 @@
             </Grid.RowDefinitions>
             <TextBlock x:Name="txtLevels" HorizontalAlignment="Center"
                    VerticalAlignment="Center" FontSize="30"
-                       Text="Levels" Background="LightGoldenrodYellow">
-
+                       Text="Levels">
             </TextBlock>
         </Grid>
         <!--cp levels-->
@@ -110,10 +109,6 @@
                     <MenuItem Header="Choose Oponent">
                         <MenuItem Header="p2" Click="p2Play_Click"/>
                         <MenuItem Header="cp" Click="cpPlay_Click" />
-                    </MenuItem>
-                    <MenuItem Header="Choose Shape">
-                        <MenuItem Header="O" Click="O_Shape_Click" />
-                        <MenuItem Header="X" Click="X_Shape_Click" />
                     </MenuItem>
                     <MenuItem x:Name="Levels" Header="Difficulty Level">
                         <MenuItem Header="Beginner levels">
@@ -144,13 +139,16 @@
                             <MenuItem Header="Level 19" Click="Level19_Click" />
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="change colors">
-                        <MenuItem Header="yellow and green" Click="green_Click" />
-                        <MenuItem Header="red and yellow" Click="yellow_Click" />
-                        <MenuItem Header="blue and red" Click="red_Click" />
-                        <MenuItem Header="green and blue" Click="blue_Click" />
-                        <MenuItem Header="pink and orange" Click="orange_Click" />
-                        <MenuItem Header="white and gray" Click="white_Click" />
+                    <MenuItem Header="Choose Shape">
+                        <MenuItem Header="O" Click="O_Shape_Click" />
+                        <MenuItem Header="X" Click="X_Shape_Click" />
+                    </MenuItem>
+                    <MenuItem Header="Choose shapes color">
+                        <MenuItem Header="Blue" Click="Blue_shapes_Click"/>
+                        <MenuItem Header="Green" Click="Green_shapes_Click" />
+                        <MenuItem Header="Yellow" Click="Yellow_shapes_Click" />
+                        <MenuItem Header="Red" Click="Red_shapes_Click" />
+                        <MenuItem Header="Black" Click="Black_shapes_Click" />
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -169,24 +167,23 @@
         <!--board-->
 
         <!--buttons-->
-        <Button x:Name="btn1" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_1" FontSize="120"></Button>
-        <Button x:Name="btn2" Grid.Column="1" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_2" FontSize="120"></Button>
-        <Button x:Name="btn3" Grid.Column="2" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_3" FontSize="120"></Button>
-        <Button x:Name="btn4" Grid.Row="1" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_4" FontSize="120"></Button>
-        <Button x:Name="btn5" Grid.Row="1" Grid.Column="1" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_5" FontSize="120"></Button>
-        <Button x:Name="btn6" Grid.Row="1" Grid.Column="2" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_6" FontSize="120"></Button>
-        <Button x:Name="btn7" Grid.Row="2" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_7" FontSize="120"></Button>
-        <Button x:Name="btn8" Grid.Row="2" Grid.Column="1" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_8" FontSize="120"></Button>
-        <Button x:Name="btn9" Grid.Row="2" Grid.Column="2" Height="170" Width="170" Background="LightGray" 
-                Click="Button_Click_9" FontSize="120"></Button>
+        <Button x:Name="btn1" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_1" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn2" Grid.Column="1" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_2" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn3" Grid.Column="2" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_3" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn4" Grid.Row="1" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_4" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn5" Grid.Row="1" Grid.Column="1" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_5" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn6" Grid.Row="1" Grid.Column="2" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_6" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn7" Grid.Row="2" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_7" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn8" Grid.Row="2" Grid.Column="1" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_8" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn9" Grid.Row="2" Grid.Column="2" Height="150" Width="150" Background="LightGray" 
+                Click="Button_Click_9" FontSize="80" Foreground="Black"></Button>
     </Grid>
-
 </UserControl>

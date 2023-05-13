@@ -18,6 +18,8 @@ namespace IxIgul.UserControls
         oponent opnt = new();
         bool isTie = false;
         bool oponent = true;
+        bool xColor = false;
+        bool oColor = false;
         int player1Score = 0;
         int player2Score = 0;
         int tieGame = 0;
@@ -56,6 +58,8 @@ namespace IxIgul.UserControls
         #endregion
 
         // pleyer2 logic
+        #region player2
+
         #region Tie Game
         private void GameTied(ref bool tie)
         {
@@ -1479,6 +1483,8 @@ namespace IxIgul.UserControls
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
         #endregion
+
+        #endregion
         // pleyer2 logic
 
         // cp logic
@@ -2218,7 +2224,7 @@ namespace IxIgul.UserControls
         /// </summary>
         private void p2Play_Click(object sender, RoutedEventArgs e)
         {
-            oponent = true;
+            oponent = true; // allow p2 logic to happen
             ClearBoard(ref plar.Shape, ref opnt.Shape);
             MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - player2 start", "CHOOSE WHO PLAY FIRST",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -2242,197 +2248,246 @@ namespace IxIgul.UserControls
         /// </summary>
         private void cpPlay_Click(object sender, RoutedEventArgs e)
         {
-            oponent = false;
+            oponent = false; // allow cp logic to happen
             ClearBoard(ref plar.Shape, ref opnt.Shape);
             NewGameStartingPlayerMessage(); // start new game
             Levels.Visibility = Visibility.Visible; // show levels option when cp play
             txtLevels.Visibility = Visibility.Visible; // show levels text when cp play
+            BegginerBackgroundColor();
         }
 
-        #region buttons backgroune colors
-        private void green_Click(object sender, RoutedEventArgs e)
+        #region Difficulty Level
+        /// <summary>
+        /// allowing level 1 logic after clicked
+        /// </summary>
+        private void Level1_Click(object sender, RoutedEventArgs e)
         {
-            // change buttons color
-            btn1.Background = Brushes.LightGreen;
-            btn2.Background = Brushes.LightGreen;
-            btn3.Background = Brushes.LightGreen;
-            btn4.Background = Brushes.LightGreen;
-            btn5.Background = Brushes.LightGreen;
-            btn6.Background = Brushes.LightGreen;
-            btn7.Background = Brushes.LightGreen;
-            btn8.Background = Brushes.LightGreen;
-            btn9.Background = Brushes.LightGreen;
-            // change buttons color
-
-            // change rectangles color
-            rec1.Fill = Brushes.Green;
-            rec2.Fill = Brushes.Green;
-            rec3.Fill = Brushes.Green;
-            rec4.Fill = Brushes.Green;
-            // change rectangles color
-
-            // change screen back ground color
-            Screen.Background = Brushes.Yellow;
-            // change screen back ground color
-
-            // change score rectengle color
-            scoreRec1.Fill = Brushes.LightBlue;
-            scoreRec2.Fill = Brushes.LightBlue;
-            // change score rectengle color
-        }
-        private void yellow_Click(object sender, RoutedEventArgs e)
-        {
-            // change buttons color
-            btn1.Background = Brushes.LightYellow;
-            btn2.Background = Brushes.LightYellow;
-            btn3.Background = Brushes.LightYellow;
-            btn4.Background = Brushes.LightYellow;
-            btn5.Background = Brushes.LightYellow;
-            btn6.Background = Brushes.LightYellow;
-            btn7.Background = Brushes.LightYellow;
-            btn8.Background = Brushes.LightYellow;
-            btn9.Background = Brushes.LightYellow;
-            // change buttons color
-
-            // change rectangles color
-            rec1.Fill = Brushes.Yellow;
-            rec2.Fill = Brushes.Yellow;
-            rec3.Fill = Brushes.Yellow;
-            rec4.Fill = Brushes.Yellow;
-            // change rectangles color
-
-            // change screen back ground color
-            Screen.Background = Brushes.Red;
-            // change screen back ground color
-
-            // change score rectengle color
-            scoreRec1.Fill = Brushes.LightGray;
-            scoreRec2.Fill = Brushes.LightGray;
-            // change score rectengle color
+            StartNewGame();
+            txtLevels.Text = "Level 1"; // display the cp level in the text block
+            level1 = true; // allow level 1 logic to happen
+            BegginerBackgroundColor(); // change screen background color
         }
 
-        private void red_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// allowing level 2 logic after clicked
+        /// </summary>
+        private void Level2_Click(object sender, RoutedEventArgs e)
         {
-            // change buttons color
-            btn1.Background = Brushes.LightCoral;
-            btn2.Background = Brushes.LightCoral;
-            btn3.Background = Brushes.LightCoral;
-            btn4.Background = Brushes.LightCoral;
-            btn5.Background = Brushes.LightCoral;
-            btn6.Background = Brushes.LightCoral;
-            btn7.Background = Brushes.LightCoral;
-            btn8.Background = Brushes.LightCoral;
-            btn9.Background = Brushes.LightCoral;
-            // change buttons color
-
-            // change rectangles color
-            rec1.Fill = Brushes.Red;
-            rec2.Fill = Brushes.Red;
-            rec3.Fill = Brushes.Red;
-            rec4.Fill = Brushes.Red;
-            // change rectangles color
-
-            // change screen back ground color
-            Screen.Background = Brushes.LightBlue;
-            // change screen back ground color
-
-            // change score rectengle color
-            scoreRec1.Fill = Brushes.Yellow;
-            scoreRec2.Fill = Brushes.Yellow;
-            // change score rectengle color
+            StartNewGame();
+            txtLevels.Text = "Level 2"; // display the cp level in the text block
+            level2 = true; // allow level 2 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            BegginerBackgroundColor(); // change screen background color
         }
 
-        private void blue_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// allowing level 3 logic after clicked
+        /// </summary>
+        private void Level3_Click(object sender, RoutedEventArgs e)
         {
-            // change buttons color
-            btn1.Background = Brushes.LightBlue;
-            btn2.Background = Brushes.LightBlue;
-            btn3.Background = Brushes.LightBlue;
-            btn4.Background = Brushes.LightBlue;
-            btn5.Background = Brushes.LightBlue;
-            btn6.Background = Brushes.LightBlue;
-            btn7.Background = Brushes.LightBlue;
-            btn8.Background = Brushes.LightBlue;
-            btn9.Background = Brushes.LightBlue;
-            // change buttons color
+            StartNewGame(); // reset score
+            txtLevels.Text = "Level 3"; // display the cp level in the text block
+            level3 = true; // allow level 3 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            BegginerBackgroundColor(); // change screen background color
+        }
 
-            // change rectangles color
+        /// <summary>
+        /// allowing level 4 logic after clicked
+        /// </summary>
+        private void Level4_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame(); // reset score
+            txtLevels.Text = "Level 4"; // display the cp level in the text block
+            level4 = true; // allow level 4 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            BegginerBackgroundColor(); // change screen background color
+        }
+
+        /// <summary>
+        /// allowing level 5 logic after clicked
+        /// </summary>
+        private void Level5_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame(); // reset score
+            txtLevels.Text = "Level 5"; // display the cp level in the text block
+            level5 = true; // allow level 5 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            BegginerBackgroundColor(); // change screen background color
+        }
+
+        /// <summary>
+        /// allowing level 6 logic after clicked
+        /// </summary>
+        private void Level6_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame(); // reset score
+            txtLevels.Text = "Level 6"; // display the cp level in the text block
+            level6 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            AdvancedBackgroundColor(); // change screen background color
+        }
+
+        private void Level7_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame(); // reset score
+            txtLevels.Text = "Level 7"; // display the cp level in the text block
+            level7 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            AdvancedBackgroundColor(); // change screen background color
+        }
+        private void Level8_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame(); // reset score
+            txtLevels.Text = "Level 8"; // display the cp level in the text block
+            level8 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            AdvancedBackgroundColor(); // change screen background color
+        }
+        private void Level9_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 9"; // display the cp level in the text block
+            level9 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            AdvancedBackgroundColor(); // change screen background color
+        }
+        private void Level10_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 10"; // display the cp level in the text block
+            level10 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            AdvancedBackgroundColor(); // change screen background color
+        }
+        private void Level11_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 11"; // display the cp level in the text block
+            level11 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            ExpertBackgroundColor(); // change screen background color
+        }
+        private void Level12_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 12"; // display the cp level in the text block
+            level12 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            ExpertBackgroundColor(); // change screen background color
+        }
+        private void Level13_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 13"; // display the cp level in the text block
+            level13 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            ExpertBackgroundColor(); // change screen background color
+        }
+        private void Level14_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 14"; // display the cp level in the text block
+            level14 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            ExpertBackgroundColor(); // change screen background color
+        }
+        private void Level15_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 15"; // display the cp level in the text block
+            level15 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            ExpertBackgroundColor(); // change screen background color
+        }
+        private void Level16_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 16"; // display the cp level in the text block
+            level16 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            LegendaryBackgroundColor(); // change screen background color
+        }
+        private void Level17_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 17"; // display the cp level in the text block
+            level17 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            LegendaryBackgroundColor(); // change screen background color
+        }
+        private void Level18_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 18"; // display the cp level in the text block
+            level18 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            LegendaryBackgroundColor(); // change screen background color
+        }
+        private void Level19_Click(object sender, RoutedEventArgs e)
+        {
+            StartNewGame();
+            txtLevels.Text = "Level 19"; // display the cp level in the text block
+            level19 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+            LegendaryBackgroundColor(); // change screen background color
+        }
+
+
+
+        #endregion
+
+        #region change board background color
+        private void BegginerBackgroundColor()
+        {
+            Screen.Background = Brushes.LightBlue; // change borad background color to light blue
+
+            // change rectangles color to blue
             rec1.Fill = Brushes.Blue;
             rec2.Fill = Brushes.Blue;
             rec3.Fill = Brushes.Blue;
             rec4.Fill = Brushes.Blue;
-            // change rectangles color
 
-            // change screen back ground color
-            Screen.Background = Brushes.LightGreen;
-            // change screen back ground color
-
-            // change score rectengle color
-            scoreRec1.Fill = Brushes.Red;
-            scoreRec2.Fill = Brushes.Red;
-            // change score rectengle color
+            txtLevels.Foreground = Brushes.Blue; // change the text to blue
         }
 
-        private void orange_Click(object sender, RoutedEventArgs e)
+        private void AdvancedBackgroundColor()
         {
-            // change buttons color
-            btn1.Background = Brushes.LightSalmon;
-            btn2.Background = Brushes.LightSalmon;
-            btn3.Background = Brushes.LightSalmon;
-            btn4.Background = Brushes.LightSalmon;
-            btn5.Background = Brushes.LightSalmon;
-            btn6.Background = Brushes.LightSalmon;
-            btn7.Background = Brushes.LightSalmon;
-            btn8.Background = Brushes.LightSalmon;
-            btn9.Background = Brushes.LightSalmon;
-            // change buttons color
+            Screen.Background = Brushes.LightGreen; // change borad background color to light green
 
-            // change rectangles color
-            rec1.Fill = Brushes.Orange;
-            rec2.Fill = Brushes.Orange;
-            rec3.Fill = Brushes.Orange;
-            rec4.Fill = Brushes.Orange;
-            // change rectangles color
+            // change rectangles color to green
+            rec1.Fill = Brushes.Green;
+            rec2.Fill = Brushes.Green;
+            rec3.Fill = Brushes.Green;
+            rec4.Fill = Brushes.Green;
 
-            // change screen back ground color
-            Screen.Background = Brushes.LightPink;
-            // change screen back ground color
-
-            // change score rectengle color
-            scoreRec1.Fill = Brushes.Blue;
-            scoreRec2.Fill = Brushes.Blue;
-            // change score rectengle color
+            txtLevels.Foreground = Brushes.Green; // change the text to green
         }
 
-        private void white_Click(object sender, RoutedEventArgs e)
+        private void ExpertBackgroundColor()
         {
-            // change buttons color
-            btn1.Background = Brushes.LightGray;
-            btn2.Background = Brushes.LightGray;
-            btn3.Background = Brushes.LightGray;
-            btn4.Background = Brushes.LightGray;
-            btn5.Background = Brushes.LightGray;
-            btn6.Background = Brushes.LightGray;
-            btn7.Background = Brushes.LightGray;
-            btn8.Background = Brushes.LightGray;
-            btn9.Background = Brushes.LightGray;
-            // change buttons color
+            Screen.Background = Brushes.LightYellow; // change borad background color to light yellow
 
-            // change rectangles color
-            rec1.Fill = Brushes.Gray;
-            rec2.Fill = Brushes.Gray;
-            rec3.Fill = Brushes.Gray;
-            rec4.Fill = Brushes.Gray;
-            // change rectangles color
+            // change rectangles color to yellow
+            rec1.Fill = Brushes.Yellow;
+            rec2.Fill = Brushes.Yellow;
+            rec3.Fill = Brushes.Yellow;
+            rec4.Fill = Brushes.Yellow;
 
-            // change screen back ground color
-            Screen.Background = Brushes.White;
-            // change screen back ground color
+            txtLevels.Foreground = Brushes.Yellow; // change the text to yellow
+        }
 
-            // change score rectengle color
-            scoreRec1.Fill = Brushes.LightCoral;
-            scoreRec2.Fill = Brushes.LightCoral;
-            // change score rectengle color
+        private void LegendaryBackgroundColor()
+        {
+            Screen.Background = Brushes.LightCoral; // change borad background color to light coral
+
+            // change rectangles color to red
+            rec1.Fill = Brushes.Red;
+            rec2.Fill = Brushes.Red;
+            rec3.Fill = Brushes.Red;
+            rec4.Fill = Brushes.Red;
+
+            txtLevels.Foreground = Brushes.Red; // change the text to red
         }
         #endregion
 
@@ -2454,162 +2509,70 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-        #region Difficulty Level
-        /// <summary>
-        /// allowing level 1 logic after clicked
-        /// </summary>
-        private void Level1_Click(object sender, RoutedEventArgs e)
+        #region Change Shapes Text Color
+        private void Blue_shapes_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
-            txtLevels.Text = "Level 1"; // display the cp level in the text block
-            level1 = true; // allow level 1 logic to happen
+            btn1.Foreground = Brushes.Blue;
+            btn2.Foreground = Brushes.Blue;
+            btn3.Foreground = Brushes.Blue;
+            btn4.Foreground = Brushes.Blue;
+            btn5.Foreground = Brushes.Blue;
+            btn6.Foreground = Brushes.Blue;
+            btn7.Foreground = Brushes.Blue;
+            btn8.Foreground = Brushes.Blue;
+            btn9.Foreground = Brushes.Blue;
         }
 
-        /// <summary>
-        /// allowing level 2 logic after clicked
-        /// </summary>
-        private void Level2_Click(object sender, RoutedEventArgs e)
+        private void Green_shapes_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
-            txtLevels.Text = "Level 2"; // display the cp level in the text block
-            level2 = true; // allow level 2 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            btn1.Foreground = Brushes.Green;
+            btn2.Foreground = Brushes.Green;
+            btn3.Foreground = Brushes.Green;
+            btn4.Foreground = Brushes.Green;
+            btn5.Foreground = Brushes.Green;
+            btn6.Foreground = Brushes.Green;
+            btn7.Foreground = Brushes.Green;
+            btn8.Foreground = Brushes.Green;
+            btn9.Foreground = Brushes.Green;
         }
 
-        /// <summary>
-        /// allowing level 3 logic after clicked
-        /// </summary>
-        private void Level3_Click(object sender, RoutedEventArgs e)
+        private void Yellow_shapes_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
-            txtLevels.Text = "Level 3"; // display the cp level in the text block
-            level3 = true; // allow level 3 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            btn1.Foreground = Brushes.Yellow;
+            btn2.Foreground = Brushes.Yellow;
+            btn3.Foreground = Brushes.Yellow;
+            btn4.Foreground = Brushes.Yellow;
+            btn5.Foreground = Brushes.Yellow;
+            btn6.Foreground = Brushes.Yellow;
+            btn7.Foreground = Brushes.Yellow;
+            btn8.Foreground = Brushes.Yellow;
+            btn9.Foreground = Brushes.Yellow;
         }
 
-        /// <summary>
-        /// allowing level 4 logic after clicked
-        /// </summary>
-        private void Level4_Click(object sender, RoutedEventArgs e)
+        private void Red_shapes_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
-            txtLevels.Text = "Level 4"; // display the cp level in the text block
-            level4 = true; // allow level 4 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            btn1.Foreground = Brushes.Red;
+            btn2.Foreground = Brushes.Red;
+            btn3.Foreground = Brushes.Red;
+            btn4.Foreground = Brushes.Red;
+            btn5.Foreground = Brushes.Red;
+            btn6.Foreground = Brushes.Red;
+            btn7.Foreground = Brushes.Red;
+            btn8.Foreground = Brushes.Red;
+            btn9.Foreground = Brushes.Red;
         }
 
-        /// <summary>
-        /// allowing level 5 logic after clicked
-        /// </summary>
-        private void Level5_Click(object sender, RoutedEventArgs e)
+        private void Black_shapes_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
-            txtLevels.Text = "Level 5"; // display the cp level in the text block
-            level5 = true; // allow level 5 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-
-        /// <summary>
-        /// allowing level 6 logic after clicked
-        /// </summary>
-        private void Level6_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame(); // reset score
-            txtLevels.Text = "Level 6"; // display the cp level in the text block
-            level6 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-
-        private void Level7_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame(); // reset score
-            txtLevels.Text = "Level 7"; // display the cp level in the text block
-            level7 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level8_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame(); // reset score
-            txtLevels.Text = "Level 8"; // display the cp level in the text block
-            level8 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level9_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 9"; // display the cp level in the text block
-            level9 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level10_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 10"; // display the cp level in the text block
-            level10 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level11_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 11"; // display the cp level in the text block
-            level11 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level12_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 12"; // display the cp level in the text block
-            level12 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level13_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 13"; // display the cp level in the text block
-            level13 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level14_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 14"; // display the cp level in the text block
-            level14 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level15_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 15"; // display the cp level in the text block
-            level15 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level16_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 16"; // display the cp level in the text block
-            level16 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level17_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 17"; // display the cp level in the text block
-            level17 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level18_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 18"; // display the cp level in the text block
-            level18 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
-        }
-        private void Level19_Click(object sender, RoutedEventArgs e)
-        {
-            StartNewGame();
-            txtLevels.Text = "Level 19"; // display the cp level in the text block
-            level19 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            btn1.Foreground = Brushes.Black;
+            btn2.Foreground = Brushes.Black;
+            btn3.Foreground = Brushes.Black;
+            btn4.Foreground = Brushes.Black;
+            btn5.Foreground = Brushes.Black;
+            btn6.Foreground = Brushes.Black;
+            btn7.Foreground = Brushes.Black;
+            btn8.Foreground = Brushes.Black;
+            btn9.Foreground = Brushes.Black;
         }
         #endregion
 
