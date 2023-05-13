@@ -63,18 +63,18 @@ namespace IxIgul.UserControls
             cpIsWinner = false;
             tie = true;
             if (!string.IsNullOrEmpty(btn1.Content as string) &&
-    !string.IsNullOrEmpty(btn2.Content as string) &&
-    !string.IsNullOrEmpty(btn3.Content as string) &&
-    !string.IsNullOrEmpty(btn4.Content as string) &&
-    !string.IsNullOrEmpty(btn5.Content as string) &&
-    !string.IsNullOrEmpty(btn6.Content as string) &&
-    !string.IsNullOrEmpty(btn7.Content as string) &&
-    !string.IsNullOrEmpty(btn8.Content as string) &&
-    !string.IsNullOrEmpty(btn9.Content as string))
+                !string.IsNullOrEmpty(btn2.Content as string) &&
+                !string.IsNullOrEmpty(btn3.Content as string) &&
+                !string.IsNullOrEmpty(btn4.Content as string) &&
+                !string.IsNullOrEmpty(btn5.Content as string) &&
+                !string.IsNullOrEmpty(btn6.Content as string) &&
+                !string.IsNullOrEmpty(btn7.Content as string) &&
+                !string.IsNullOrEmpty(btn8.Content as string) &&
+                !string.IsNullOrEmpty(btn9.Content as string))
             {
                 MessageBox.Show("The screen is full, so the result is tie", "CLEAN THE SCREEN",
                     MessageBoxButton.OK, MessageBoxImage.None);
-                WindowScore();
+                WindowScore(ref plar.Score, ref opnt.Score, ref tieGame);
                 ConsistantScore(ref isTie);
 
                 MessageBox.Show("Let me clean the screen\n: - )", "CLEAN THE SCREEN",
@@ -122,9 +122,13 @@ namespace IxIgul.UserControls
         #region Score
 
         #region Score In Window
-        private void WindowScore()
+        private void WindowScore(ref int plrScore, ref int opnScore, ref int tie)
         {
-            MessageBox.Show("The score is: \nplayer1 - " + plar.Score + "\nplayer2 - " + opnt.Score, "SCORE",
+            if (!plar.IsWinner && !opnt.IsWinner)
+            {
+                tie++;
+            }
+            MessageBox.Show("The score is: \nplayer1 - " + plrScore + "\nplayer2 - " + opnScore + "\ntie - " + tie, "SCORE",
                  MessageBoxButton.OK, MessageBoxImage.Information);
             FollowingStartingPlayerMessage();
         }
@@ -271,7 +275,7 @@ namespace IxIgul.UserControls
             {
                 MessageBox.Show(player2 + " win!!", "WINNER", MessageBoxButton.OK, MessageBoxImage.None);
             }
-            WindowScore();
+            WindowScore(ref plar.Score, ref opnt.Score, ref tieGame);
             ConsistantScore(ref isTie);
             ClearBoard(ref plar.Shape, ref opnt.Shape);
 
@@ -2450,6 +2454,17 @@ namespace IxIgul.UserControls
             rec3.Fill = Brushes.Blue;
             rec4.Fill = Brushes.Blue;
 
+            // change buttons background color to the screen background color 
+            btn1.Background = Brushes.LightBlue;
+            btn2.Background = Brushes.LightBlue;
+            btn3.Background = Brushes.LightBlue;
+            btn4.Background = Brushes.LightBlue;
+            btn5.Background = Brushes.LightBlue;
+            btn6.Background = Brushes.LightBlue;
+            btn7.Background = Brushes.LightBlue;
+            btn8.Background = Brushes.LightBlue;
+            btn9.Background = Brushes.LightBlue;
+
             txtLevels.Foreground = Brushes.Blue; // change the text to blue
         }
 
@@ -2462,6 +2477,17 @@ namespace IxIgul.UserControls
             rec2.Fill = Brushes.Green;
             rec3.Fill = Brushes.Green;
             rec4.Fill = Brushes.Green;
+
+            // change buttons background color to the screen background color 
+            btn1.Background = Brushes.LightGreen;
+            btn2.Background = Brushes.LightGreen;
+            btn3.Background = Brushes.LightGreen;
+            btn4.Background = Brushes.LightGreen;
+            btn5.Background = Brushes.LightGreen;
+            btn6.Background = Brushes.LightGreen;
+            btn7.Background = Brushes.LightGreen;
+            btn8.Background = Brushes.LightGreen;
+            btn9.Background = Brushes.LightGreen;
 
             txtLevels.Foreground = Brushes.Green; // change the text to green
         }
@@ -2476,6 +2502,17 @@ namespace IxIgul.UserControls
             rec3.Fill = Brushes.Yellow;
             rec4.Fill = Brushes.Yellow;
 
+            // change buttons background color to the screen background color 
+            btn1.Background = Brushes.LightYellow;
+            btn2.Background = Brushes.LightYellow;
+            btn3.Background = Brushes.LightYellow;
+            btn4.Background = Brushes.LightYellow;
+            btn5.Background = Brushes.LightYellow;
+            btn6.Background = Brushes.LightYellow;
+            btn7.Background = Brushes.LightYellow;
+            btn8.Background = Brushes.LightYellow;
+            btn9.Background = Brushes.LightYellow;
+
             txtLevels.Foreground = Brushes.Yellow; // change the text to yellow
         }
 
@@ -2488,6 +2525,17 @@ namespace IxIgul.UserControls
             rec2.Fill = Brushes.Red;
             rec3.Fill = Brushes.Red;
             rec4.Fill = Brushes.Red;
+
+            // change buttons background color to the screen background color 
+            btn1.Background = Brushes.LightCoral;
+            btn2.Background = Brushes.LightCoral;
+            btn3.Background = Brushes.LightCoral;
+            btn4.Background = Brushes.LightCoral;
+            btn5.Background = Brushes.LightCoral;
+            btn6.Background = Brushes.LightCoral;
+            btn7.Background = Brushes.LightCoral;
+            btn8.Background = Brushes.LightCoral;
+            btn9.Background = Brushes.LightCoral;
 
             txtLevels.Foreground = Brushes.Red; // change the text to red
         }

@@ -6,6 +6,23 @@
              xmlns:local="clr-namespace:IxIgul.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1000">
+
+    <UserControl.Resources>
+        <Style TargetType="Button" x:Key="buttonsStyle">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="80"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid x:Name="Screen" Background="White">
 
         <Grid.RowDefinitions>
@@ -167,23 +184,23 @@
         <!--board-->
 
         <!--buttons-->
-        <Button x:Name="btn1" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_1" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn2" Grid.Column="1" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_2" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn3" Grid.Column="2" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_3" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn4" Grid.Row="1" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_4" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn5" Grid.Row="1" Grid.Column="1" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_5" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn6" Grid.Row="1" Grid.Column="2" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_6" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn7" Grid.Row="2" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_7" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn8" Grid.Row="2" Grid.Column="1" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_8" FontSize="80" Foreground="Black"></Button>
-        <Button x:Name="btn9" Grid.Row="2" Grid.Column="2" Height="150" Width="150" Background="LightGray" 
-                Click="Button_Click_9" FontSize="80" Foreground="Black"></Button>
+        <Button x:Name="btn1" Click="Button_Click_1" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn2" Grid.Column="1" Click="Button_Click_2" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn3" Grid.Column="2" Click="Button_Click_3" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn4" Grid.Row="1" Click="Button_Click_4" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn5" Grid.Row="1" Grid.Column="1" Click="Button_Click_5" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn6" Grid.Row="1" Grid.Column="2" Click="Button_Click_6" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn7" Grid.Row="2" Click="Button_Click_7" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn8" Grid.Row="2" Grid.Column="1" Click="Button_Click_8" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn9" Grid.Row="2" Grid.Column="2" Click="Button_Click_9" 
+                Style="{StaticResource buttonsStyle}"></Button>
     </Grid>
 </UserControl>

@@ -24,4 +24,3 @@ C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\refint\IxIgul.dll
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\IxIgul.pdb
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\IxIgul.genruntimeconfig.cache
 C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\ref\IxIgul.dll
-C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\Style\LogicStyle.baml
