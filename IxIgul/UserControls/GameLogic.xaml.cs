@@ -1,7 +1,5 @@
 ﻿using IxIgul.Players;
 using System;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,8 +16,6 @@ namespace IxIgul.UserControls
         oponent opnt = new();
         bool isTie = false;
         bool oponent = true;
-        bool xColor = false;
-        bool oColor = false;
         int player1Score = 0;
         int player2Score = 0;
         int tieGame = 0;
@@ -61,8 +57,10 @@ namespace IxIgul.UserControls
         #region player2
 
         #region Tie Game
-        private void GameTied(ref bool tie)
+        private void GameTied(ref bool tie, ref bool plrIsWinner, ref bool cpIsWinner)
         {
+            plrIsWinner = false;
+            cpIsWinner = false;
             tie = true;
             if (!string.IsNullOrEmpty(btn1.Content as string) &&
     !string.IsNullOrEmpty(btn2.Content as string) &&
@@ -157,14 +155,17 @@ namespace IxIgul.UserControls
         #endregion
 
         #region Reset Score Method
-        private void ResetScore(out int plrScore, out int opnScore)
+        private void ResetScore(out int plrScore, out int opnScore, out int tie)
         {
             plrScore = 0;
             opnScore = 0;
+            tie = 0;
             player1Score = 0;
             player2Score = 0;
+            tieGame = 0;
             Player1Score.Text = "0";
             Player2Score.Text = "0";
+            tieScore.Text = "0";
         }
         #endregion
 
@@ -240,7 +241,7 @@ namespace IxIgul.UserControls
                     CpPlaceLevel1(ref opnt.Shape);
                 }
             }
-            ResetScore(out plar.Score, out opnt.Score);
+            ResetScore(out plar.Score, out opnt.Score, out tieGame);
         }
         #endregion
 
@@ -415,7 +416,7 @@ namespace IxIgul.UserControls
                 opnt.Score++;
                 isWin();
             }
-            GameTied(ref isTie);
+            GameTied(ref isTie, ref plar.IsWinner, ref opnt.IsWinner);
 
             return false;
         }
@@ -2205,7 +2206,7 @@ namespace IxIgul.UserControls
 
         #endregion
         // cp logic
-
+        
         // menu bar logic
         #region menu bar
         private void New_Game_Click(object sender, RoutedEventArgs e)
@@ -2238,7 +2239,7 @@ namespace IxIgul.UserControls
                 opnt.IsPlay = true;
                 plar.IsPlay = false;
             }
-            ResetScore(out plar.Score, out opnt.Score);
+            ResetScore(out plar.Score, out opnt.Score, out tieGame);
             Levels.Visibility = Visibility.Hidden; // hide levels option when cp not play
             txtLevels.Visibility = Visibility.Hidden; // hide levels text when cp not play
         }
@@ -2437,6 +2438,7 @@ namespace IxIgul.UserControls
 
         #endregion
 
+
         #region change board background color
         private void BegginerBackgroundColor()
         {
@@ -2490,6 +2492,7 @@ namespace IxIgul.UserControls
             txtLevels.Foreground = Brushes.Red; // change the text to red
         }
         #endregion
+
 
         #region Choose Shape
         private void O_Shape_Click(object sender, RoutedEventArgs e)
