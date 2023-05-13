@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\Alon\Desktop\IxIgul\IxIgul\App.xaml
-3297242556
+4169459835
 
 81483103286
 194-1797456590
-MainWindow.xaml;UserControls\Board.xaml;UserControls\GameLogic.xaml;
+MainWindow.xaml;Style\LogicStyle.xaml;UserControls\Board.xaml;UserControls\GameLogic.xaml;
 
 False
 

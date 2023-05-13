@@ -28,6 +28,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -37,27 +39,48 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="4" Grid.ColumnSpan="2" Text="SCORE"
-                       FontSize="30" HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"></TextBlock>
+            <!--main title-->
+            <TextBlock Grid.Column="6" Grid.ColumnSpan="3" Text="SCORE"
+                       FontSize="20" HorizontalAlignment="Left"
+                       VerticalAlignment="Center"></TextBlock>
+            <!--main title-->
+            
+            <!--second title-->
+            <TextBlock Grid.Column="5" Grid.Row="1" Text="player1"
+                       FontSize="15" HorizontalAlignment="Right"></TextBlock>
+            
+            <TextBlock Grid.Column="7" Grid.Row="1" Text="player2"
+                       FontSize="18" HorizontalAlignment="Left"></TextBlock>
+            
+            <TextBlock Grid.Column="6" Grid.Row="1" 
+                       Text="Tie" FontSize="15" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top">
+            </TextBlock>
+            <!--second title-->
 
-            <TextBlock Grid.Column="4" Grid.Row="1" Text="player1"
-                       FontSize="20" HorizontalAlignment="Center"></TextBlock>
-            <TextBlock Grid.Column="5" Grid.Row="1" Text="player2"
-                       FontSize="20" HorizontalAlignment="Center"></TextBlock>
-
-            <TextBlock x:Name="Player1Score" Grid.Column="4" 
+            <!--score number-->
+            <TextBlock x:Name="Player1Score" Grid.Column="5" 
                    Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
-                   Text="0" FontSize="20"></TextBlock>
-            <TextBlock x:Name="Player2Score" Grid.Column="5" 
+                   Text="0" FontSize="18"></TextBlock>
+            
+            <TextBlock x:Name="tieScore" Grid.Row="2" Grid.Column="6" 
+                       Text="0" FontSize="18" VerticalAlignment="Top" 
+                       HorizontalAlignment="Center" >
+            </TextBlock>
+            
+            <TextBlock x:Name="Player2Score" Grid.Column="7" 
                    Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
-                   Text="0" FontSize="20"></TextBlock>
-            <Rectangle x:Name="scoreRec1" Grid.Column="4" Grid.RowSpan="3"
+                   Text="0" FontSize="15"></TextBlock>
+            <!--score number-->           
+            
+            <!--rectengles-->
+            <Rectangle x:Name="scoreRec1" Grid.Column="5" Grid.RowSpan="3"
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                     Fill="LightCoral" Height="180" Width="10"></Rectangle>
-            <Rectangle x:Name="scoreRec2"  Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" 
+            <Rectangle x:Name="scoreRec2"  Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="3" 
                        HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                        Height="10" Width="220" Fill="LightCoral"></Rectangle>
+
         </Grid>
         <!--score-->
 
@@ -93,16 +116,33 @@
                         <MenuItem Header="X" Click="X_Shape_Click" />
                     </MenuItem>
                     <MenuItem x:Name="Levels" Header="Difficulty Level">
-                        <MenuItem Header="Level 1" Click="Level1_Click" />
-                        <MenuItem Header="Level 2" Click="Level2_Click" />
-                        <MenuItem Header="Level 3" Click="Level3_Click" />
-                        <MenuItem Header="Level 4" Click="Level4_Click" />
-                        <MenuItem Header="Level 5" Click="Level5_Click" />
-                        <MenuItem Header="Level 6" Click="Level6_Click" />
-                        <MenuItem Header="Level 7" Click="Level7_Click" />
-                        <MenuItem Header="Level 8" Click="Level8_Click" />
-                        <MenuItem Header="Level 9" Click="Level9_Click" />
-                        <MenuItem Header="Level 10" Click="Level10_Click" />
+                        <MenuItem Header="Beginner levels">
+                            <MenuItem Header="Level 1" Click="Level1_Click" />
+                            <MenuItem Header="Level 2" Click="Level2_Click" />
+                            <MenuItem Header="Level 3" Click="Level3_Click" />
+                            <MenuItem Header="Level 4" Click="Level4_Click" />
+                            <MenuItem Header="Level 5" Click="Level5_Click" />
+                        </MenuItem>
+                        <MenuItem Header="advanced level">
+                            <MenuItem Header="Level 6" Click="Level6_Click" />
+                            <MenuItem Header="Level 7" Click="Level7_Click" />
+                            <MenuItem Header="Level 8" Click="Level8_Click" />
+                            <MenuItem Header="Level 9" Click="Level9_Click" />
+                            <MenuItem Header="Level 10" Click="Level10_Click" />
+                        </MenuItem>
+                        <MenuItem Header="Expert level">
+                            <MenuItem Header="Level 11" Click="Level11_Click" />
+                            <MenuItem Header="Level 12" Click="Level12_Click" />
+                            <MenuItem Header="Level 13" Click="Level13_Click" />
+                            <MenuItem Header="Level 14" Click="Level14_Click" />
+                            <MenuItem Header="Level 15" Click="Level15_Click" />
+                        </MenuItem>
+                        <MenuItem Header="Legendary level">
+                            <MenuItem Header="Level 16" Click="Level16_Click" />
+                            <MenuItem Header="Level 17" Click="Level17_Click" />
+                            <MenuItem Header="Level 18" Click="Level18_Click" />
+                            <MenuItem Header="Level 19" Click="Level19_Click" />
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem Header="change colors">
                         <MenuItem Header="yellow and green" Click="green_Click" />
