@@ -16,14 +16,18 @@ namespace IxIgul.UserControls
         p2 plar = new();
         oponent opnt = new();
         bool oponent = true;
-        int player1Score;
-        int player2Score;
-        bool level1 = false;
+        int player1Score = 0;
+        int player2Score = 0;
+        bool level1 = true;
         bool level2 = false;
         bool level3 = false;
         bool level4 = false;
         bool level5 = false;
         bool level6 = false;
+        bool level7 = false;
+        bool level8 = false;
+        bool level9 = false;
+        bool level10 = false;
         #endregion
 
         #region Constructor
@@ -31,25 +35,13 @@ namespace IxIgul.UserControls
         {
             InitializeComponent();
 
-            // Allows all buttons to be clicks
-            btn1.IsEnabled = true;
-            btn2.IsEnabled = true;
-            btn3.IsEnabled = true;
-            btn4.IsEnabled = true;
-            btn5.IsEnabled = true;
-            btn6.IsEnabled = true;
-            btn7.IsEnabled = true;
-            btn8.IsEnabled = true;
-            btn9.IsEnabled = true;
-
-            level1 = true;
-
             Levels.Visibility = Visibility.Hidden;
+            txtLevels.Text = "Level 1";
+            txtLevels.Visibility = Visibility.Hidden;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
             WhoWillPlayFirstMessage();
         }
         #endregion
-
 
         // pleyer2 logic
         #region TieGame
@@ -110,6 +102,7 @@ namespace IxIgul.UserControls
         }
         #endregion
 
+        #region Score
         #region Score In Window
         private void WindowScore()
         {
@@ -137,7 +130,21 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-        #region WhosStartToPlayMessage
+        #region Reset Score Method
+        private void ResetScore(out int plrScore, out int opnScore)
+        {
+            plrScore = 0;
+            opnScore = 0;
+            player1Score = 0;
+            player2Score = 0;
+            Player1Score.Text = "0";
+            Player2Score.Text = "0";
+        }
+        #endregion
+
+        #endregion
+
+        #region Whos Start ToPlay Messages
         /// <summary>
         /// Who Start To Play
         /// </summary>
@@ -207,10 +214,11 @@ namespace IxIgul.UserControls
                     CpPlaceLevel1(ref opnt.Shape);
                 }
             }
+            ResetScore(out plar.Score, out opnt.Score);
         }
         #endregion
 
-        #region WhoIsWon
+        #region Who Is Won
         private void isWin()
         {
             string player = "player1";
@@ -236,7 +244,7 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-        #region ChekWhoWon
+        #region Chek Who Won
         private bool CheckWinner(ref string pl, ref string co)
         {
             // ------- p win -------
@@ -374,6 +382,22 @@ namespace IxIgul.UserControls
         }
         #endregion
 
+        #region board is empty method
+        private bool BoardIsEmpty()
+        {
+            if ((string)btn1.Content == "" && (string)btn2.Content == "" && (string)btn3.Content == "" &&
+            (string)btn4.Content == "" && (string)btn5.Content == "" && (string)btn6.Content == "" &&
+            (string)btn7.Content == "" && (string)btn8.Content == "" && (string)btn9.Content == "")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
+
         #region buttons events
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -403,39 +427,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn1.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn1.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn1.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn1.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn1.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn1.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn1.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn1.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn1.IsEnabled = false;
@@ -471,39 +499,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn2.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn2.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn2.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn2.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn2.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn2.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn2.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn2.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn2.IsEnabled = false;
@@ -538,39 +570,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn3.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn3.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn3.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn3.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn3.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn3.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn3.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn3.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn3.IsEnabled = false;
@@ -605,39 +641,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn4.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn4.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn4.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn4.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn4.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn4.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn4.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn4.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn4.IsEnabled = false;
@@ -672,39 +712,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn5.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn5.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn5.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn5.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn5.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn5.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn5.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn5.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn5.IsEnabled = false;
@@ -739,39 +783,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn6.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn6.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn6.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn6.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn6.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn6.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn6.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn6.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn6.IsEnabled = false;
@@ -806,39 +854,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn7.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn7.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn7.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn7.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn7.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn7.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn7.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn7.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn7.IsEnabled = false;
@@ -873,39 +925,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn8.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn8.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn8.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn8.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn8.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn8.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn8.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn8.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn8.IsEnabled = false;
@@ -940,39 +996,43 @@ namespace IxIgul.UserControls
                 }
                 else if (level3)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn9.Content = plar.Shape;
                     CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level4)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn9.Content = plar.Shape;
                     CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level5)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn9.Content = plar.Shape;
                     CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
                 }
                 else if (level6)
                 {
-                    if (opnt.IsPlay)
-                    {
-                        CpPlaceLevel1(ref opnt.Shape);
-                    }
                     btn9.Content = plar.Shape;
                     CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level7)
+                {
+                    btn9.Content = plar.Shape;
+                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level8)
+                {
+                    btn9.Content = plar.Shape;
+                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level9)
+                {
+                    btn9.Content = plar.Shape;
+                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                }
+                else if (level10)
+                {
+                    btn9.Content = plar.Shape;
+                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
                 }
             }
             btn9.IsEnabled = false;
@@ -1274,11 +1334,41 @@ namespace IxIgul.UserControls
         }
 
         /// <summary>
-        /// In addition to the previous method, cp block in the middle always
+        /// In addition to the previous method, cp block in diagonally from above to down
         /// </summary>
         /// <param name="plr">player shape</param>
         /// <param name="opn">cp shape</param>
         private void CpPlaceLevel6(ref string plr, ref string opn)
+        {
+            bool conditionsSucceeded = false;
+
+            if ((string)btn1.Content == plr && (string)btn5.Content == plr &&
+               (string)btn9.Content == "" || (string)btn9.Content == null)
+            {
+                btn9.Content = opn;
+                btn9.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+            if ((string)btn3.Content == plr && (string)btn5.Content == plr &&
+               (string)btn7.Content == "" || (string)btn7.Content == null)
+            {
+                btn7.Content = opn;
+                btn7.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+
+            if (conditionsSucceeded == false)
+            {
+                CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+            }
+        }
+
+        /// <summary>
+        /// In addition to the previous method, cp block in the middle always
+        /// </summary>
+        /// <param name="plr">player shape</param>
+        /// <param name="opn">cp shape</param>
+        private void CpPlaceLevel7(ref string plr, ref string opn)
         {
             bool conditionsSucceeded = false;
 
@@ -1299,9 +1389,101 @@ namespace IxIgul.UserControls
 
             if (conditionsSucceeded == false)
             {
-                CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
             }
         }
+
+        /// <summary>
+        /// In addition to the previous method, cp block from down ti up excep in the middle
+        /// </summary>
+        /// <param name="plr">player shape</param>
+        /// <param name="opn">cp shape</param>
+        private void CpPlaceLevel8(ref string plr, ref string opn)
+        {
+            bool conditionsSucceeded = false;
+
+            if ((string)btn7.Content == plr && (string)btn4.Content == plr &&
+               (string)btn1.Content == "" || (string)btn1.Content == null)
+            {
+                btn1.Content = opn;
+                btn1.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+            else if ((string)btn9.Content == plr && (string)btn6.Content == plr &&
+               (string)btn3.Content == "" || (string)btn3.Content == null)
+            {
+                btn3.Content = opn;
+                btn3.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+
+            if (conditionsSucceeded == false)
+            {
+                CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+            }
+        }
+
+        /// <summary>
+        /// In addition to the previous method, cp block from rigt to lefet excep in the middle
+        /// </summary>
+        /// <param name="plr">player shape</param>
+        /// <param name="opn">cp shape</param>
+        private void CpPlaceLevel9(ref string plr, ref string opn)
+        {
+            bool conditionsSucceeded = false;
+
+            if ((string)btn3.Content == plr && (string)btn2.Content == plr &&
+               (string)btn1.Content == "" || (string)btn1.Content == null)
+            {
+                btn1.Content = opn;
+                btn1.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+            else if ((string)btn9.Content == plr && (string)btn8.Content == plr &&
+               (string)btn7.Content == "" || (string)btn7.Content == null)
+            {
+                btn7.Content = opn;
+                btn7.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+
+            if (conditionsSucceeded == false)
+            {
+                CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+            }
+        }
+
+        /// <summary>
+        /// In addition to the previous method, cp block from right to left and from down to up in the middle
+        /// </summary>
+        /// <param name="plr">platyer shape</param>
+        /// <param name="opn">cp shape</param>
+        private void CpPlaceLevel10(ref string plr, ref string opn)
+        {
+            bool conditionsSucceeded = false;
+
+            if ((string)btn6.Content == plr && (string)btn5.Content == plr &&
+              (string)btn4.Content == "" || (string)btn4.Content == null)
+            {
+                btn4.Content = opn;
+                btn4.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+            else if ((string)btn8.Content == plr && (string)btn5.Content == plr &&
+              (string)btn2.Content == "" || (string)btn2.Content == null)
+            {
+                btn2.Content = opn;
+                btn2.IsEnabled = false;
+                conditionsSucceeded = true;
+            }
+
+            if (conditionsSucceeded == false)
+            {
+                CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+            }
+
+        }
+
 
         #endregion
         // cp logic
@@ -1310,13 +1492,13 @@ namespace IxIgul.UserControls
         #region menu bar
         private void New_Game_Click(object sender, RoutedEventArgs e)
         {
-            ClearBoard(ref plar.Shape, ref opnt.Shape);
-            NewGameStartingPlayerMessage();
+            ClearBoard(ref plar.Shape, ref opnt.Shape); // clear the board
+            NewGameStartingPlayerMessage(); // start new game
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Application.Current.Shutdown(); // exit game
         }
 
         /// <summary>
@@ -1338,7 +1520,9 @@ namespace IxIgul.UserControls
                 opnt.IsPlay = true;
                 plar.IsPlay = false;
             }
-            Levels.Visibility = Visibility.Hidden;
+            ResetScore(out plar.Score, out opnt.Score);
+            Levels.Visibility = Visibility.Hidden; // hide levels option when cp not play
+            txtLevels.Visibility = Visibility.Hidden; // hide levels text when cp not play
         }
 
         /// <summary>
@@ -1348,20 +1532,9 @@ namespace IxIgul.UserControls
         {
             oponent = false;
             ClearBoard(ref plar.Shape, ref opnt.Shape);
-            MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - cp start", "CHOOSE WHO PLAY FIRST",
-            MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                plar.IsPlay = true;
-                opnt.IsPlay = false;
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                opnt.IsPlay = true;
-                plar.IsPlay = false;
-                CpPlaceLevel1(ref opnt.Shape);
-            }
-            Levels.Visibility = Visibility.Visible;
+            NewGameStartingPlayerMessage(); // start new game
+            Levels.Visibility = Visibility.Visible; // show levels option when cp play
+            txtLevels.Visibility = Visibility.Visible; // show levels text when cp play
         }
 
         #region buttons backgroune colors
@@ -1580,9 +1753,10 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 ClearBoard(ref plar.Shape, ref opnt.Shape);
-                NewGameStartingPlayerMessage();
+                NewGameStartingPlayerMessage(); // reset board and score
             }
-            level1 = true;
+            txtLevels.Text = "Level 1"; // display the cp level in the text block
+            level1 = true; // allow level 1 logic to happen
         }
 
         /// <summary>
@@ -1595,10 +1769,11 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 ClearBoard(ref plar.Shape, ref opnt.Shape);
-                NewGameStartingPlayerMessage();
+                NewGameStartingPlayerMessage(); // reset board and score
             }
-            level2 = true;
-            level1 = false;
+            txtLevels.Text = "Level 2"; // display the cp level in the text block
+            level2 = true; // allow level 2 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
         }
 
         /// <summary>
@@ -1611,10 +1786,11 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 ClearBoard(ref plar.Shape, ref opnt.Shape);
-                NewGameStartingPlayerMessage();
-            }
-            level3 = true;
-            level1 = false;
+                NewGameStartingPlayerMessage(); // reset board and score
+            } // reset score
+            txtLevels.Text = "Level 3"; // display the cp level in the text block
+            level3 = true; // allow level 3 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
         }
 
         /// <summary>
@@ -1627,10 +1803,11 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 ClearBoard(ref plar.Shape, ref opnt.Shape);
-                NewGameStartingPlayerMessage();
-            }
-            level4 = true;
-            level1 = false;
+                NewGameStartingPlayerMessage(); // reset board and score
+            } // reset score
+            txtLevels.Text = "Level 4"; // display the cp level in the text block
+            level4 = true; // allow level 4 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
         }
 
         /// <summary>
@@ -1643,10 +1820,11 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 ClearBoard(ref plar.Shape, ref opnt.Shape);
-                NewGameStartingPlayerMessage();
-            }
-            level5 = true;
-            level1 = false;
+                NewGameStartingPlayerMessage(); // reset board and score
+            } // reset score
+            txtLevels.Text = "Level 5"; // display the cp level in the text block
+            level5 = true; // allow level 5 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
         }
 
         /// <summary>
@@ -1659,10 +1837,64 @@ namespace IxIgul.UserControls
             if (result == MessageBoxResult.Yes)
             {
                 ClearBoard(ref plar.Shape, ref opnt.Shape);
-                NewGameStartingPlayerMessage();
+                NewGameStartingPlayerMessage();// reset board and score
+            } // reset score
+            txtLevels.Text = "Level 6"; // display the cp level in the text block
+            level6 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+        }
+
+        private void Level7_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+               MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape);
+                NewGameStartingPlayerMessage(); // reset board and score
+            } // reset score
+            txtLevels.Text = "Level 7"; // display the cp level in the text block
+            level7 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+        }
+        private void Level8_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+               MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape);
+                NewGameStartingPlayerMessage(); // reset board and score
+            } // reset score
+            txtLevels.Text = "Level 8"; // display the cp level in the text block
+            level8 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+        }
+        private void Level9_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+               MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape); // reset score
+                NewGameStartingPlayerMessage(); // reset board and score
             }
-            level6 = true;
-            level1 = false;
+            txtLevels.Text = "Level 9"; // display the cp level in the text block
+            level9 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
+        }
+        private void Level10_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
+               MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                ClearBoard(ref plar.Shape, ref opnt.Shape); // reset score
+                NewGameStartingPlayerMessage(); // reset board and score
+            }
+            txtLevels.Text = "Level 10"; // display the cp level in the text block
+            level10 = true; // allow level 6 logic to happen
+            level1 = false; // not allow to level 1 logic to happen
         }
         #endregion
 
