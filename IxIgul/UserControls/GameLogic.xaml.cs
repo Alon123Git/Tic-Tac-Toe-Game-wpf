@@ -1,8 +1,12 @@
-﻿using IxIgul.Players;
+﻿using IxIgul.BasicVaribles;
+using IxIgul.Players;
 using System;
+using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace IxIgul.UserControls
 {
@@ -12,32 +16,18 @@ namespace IxIgul.UserControls
     public partial class GameLogic : UserControl
     {
         #region Varibles
-        p2 plar = new();
-        oponent opnt = new();
+        Player plar = new();
+        Opponent opnt = new();
+        data dat = new();
+        System.Timers.Timer timer = new System.Timers.Timer();
         bool isTie = false;
+        int counter = 0;
         bool oponent = true;
         int player1Score = 0;
         int player2Score = 0;
         int tieGame = 0;
-        bool level1 = true;
-        bool level2 = false;
-        bool level3 = false;
-        bool level4 = false;
-        bool level5 = false;
-        bool level6 = false;
-        bool level7 = false;
-        bool level8 = false;
-        bool level9 = false;
-        bool level10 = false;
-        bool level11 = false;
-        bool level12 = false;
-        bool level13 = false;
-        bool level14 = false;
-        bool level15 = false;
-        bool level16 = false;
-        bool level17 = false;
-        bool level18 = false;
-        bool level19 = false;
+        bool gameIsStart = false;
+        bool gameIsEnd = false;
         #endregion
 
         #region Constructor
@@ -48,9 +38,14 @@ namespace IxIgul.UserControls
             Levels.Visibility = Visibility.Hidden;
             txtLevels.Text = "Level 1";
             txtLevels.Visibility = Visibility.Hidden;
+
+            StartTimer(ref timer);
+
             CheckWinner(ref plar.Shape, ref opnt.Shape);
             WhoWillPlayFirstMessage();
+            gameIsStart = true;
         }
+
         #endregion
 
         // pleyer2 logic
@@ -72,6 +67,7 @@ namespace IxIgul.UserControls
                 !string.IsNullOrEmpty(btn8.Content as string) &&
                 !string.IsNullOrEmpty(btn9.Content as string))
             {
+                StopTimer(ref timer);
                 MessageBox.Show("The screen is full, so the result is tie", "CLEAN THE SCREEN",
                     MessageBoxButton.OK, MessageBoxImage.None);
                 WindowScore(ref plar.Score, ref opnt.Score, ref tieGame);
@@ -87,6 +83,8 @@ namespace IxIgul.UserControls
                 {
                     CpPlaceLevel1(ref opnt.Shape);
                 }
+
+                ResetAndStartTimer(ref counter, ref timer); // id the game is tied reset the timer
             }
             tie = false;
         }
@@ -181,6 +179,7 @@ namespace IxIgul.UserControls
         /// </summary>
         private void WhoWillPlayFirstMessage()
         {
+            StopTimer(ref timer);
             MessageBoxResult result = MessageBox.Show("WHO WILL PLAY FIRST? for p1 to start press yes, for the p2 to start press no please", "CHOOSE WHO START",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -196,6 +195,7 @@ namespace IxIgul.UserControls
                     CpPlaceLevel1(ref opnt.Shape);
                 }
             }
+            ResetAndStartTimer(ref counter, ref timer);
         }
 
         /// <summary>
@@ -203,6 +203,7 @@ namespace IxIgul.UserControls
         /// </summary>
         private void FollowingStartingPlayerMessage()
         {
+            StopTimer(ref timer);
             MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - player2 start\nIf you want to exit - cancel", "CHOOSE WHO PLAY FIRST",
             MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
@@ -224,10 +225,12 @@ namespace IxIgul.UserControls
             {
                 Application.Current.Shutdown();
             }
+            ResetAndStartTimer(ref counter, ref timer);
         }
 
         private void NewGameStartingPlayerMessage()
         {
+            StopTimer(ref timer);
             MessageBoxResult result = MessageBox.Show("For new game choose the starting player\nyes - player start\nno - cp start", "NEW GAME",
           MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -245,13 +248,15 @@ namespace IxIgul.UserControls
                     CpPlaceLevel1(ref opnt.Shape);
                 }
             }
+            ResetAndStartTimer(ref counter, ref timer);
             ResetScore(out plar.Score, out opnt.Score, out tieGame);
         }
         #endregion
 
         #region start a new game question
-        private void StartNewGame()
+        private void StartNewGame(ref System.Timers.Timer t)
         {
+            t.Stop();
             MessageBoxResult result = MessageBox.Show("Do you wanna start a new game?", "NEW GAME?",
               MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
@@ -259,12 +264,18 @@ namespace IxIgul.UserControls
                 ClearBoard(ref plar.Shape, ref opnt.Shape); // reset score
                 NewGameStartingPlayerMessage(); // reset board and score
             }
+            else
+            {
+                t.Start();
+            }
         }
         #endregion
 
         #region Who Is Won
-        private void isWin()
+        private void isWin(ref bool gameEnd, ref bool gameStart)
         {
+            gameStart = false;
+            gameEnd = true;
             string player = "player1";
             string player2 = "player2";
             if (plar.IsWinner)
@@ -279,7 +290,7 @@ namespace IxIgul.UserControls
             ConsistantScore(ref isTie);
             ClearBoard(ref plar.Shape, ref opnt.Shape);
 
-            // if it is cp turn generate cp shape in random place
+            // if cp start nex game generate cp shape in random place
             if (opnt.IsPlay && oponent == false && plar.IsWinner ||
                 opnt.IsPlay && oponent == false && opnt.IsWinner)
             {
@@ -288,137 +299,155 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-        #region Chek Who Won
+        #region Check Who Won
         private bool CheckWinner(ref string pl, ref string co)
         {
-            // ------- p win -------
+            // ------- player win -------
             if ((string)btn1.Content == pl && (string)btn2.Content == pl && (string)btn3.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn4.Content == pl && (string)btn5.Content == pl && (string)btn6.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn7.Content == pl && (string)btn8.Content == pl && (string)btn9.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn1.Content == pl && (string)btn4.Content == pl && (string)btn7.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn2.Content == pl && (string)btn5.Content == pl && (string)btn8.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn3.Content == pl && (string)btn6.Content == pl && (string)btn9.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
+                isWin(ref gameIsEnd, ref gameIsStart);
 
             }
             else if ((string)btn1.Content == pl && (string)btn5.Content == pl && (string)btn9.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn3.Content == pl && (string)btn5.Content == pl && (string)btn7.Content == pl)
             {
+                StopTimer(ref timer);
                 plar.IsWinner = true;
                 opnt.IsWinner = false;
                 plar.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
 
             // -------- cp win --------
             if ((string)btn1.Content == co && (string)btn2.Content == co && (string)btn3.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
+                isWin(ref gameIsEnd, ref gameIsStart);
 
             }
             else if ((string)btn4.Content == co && (string)btn5.Content == co && (string)btn6.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn7.Content == co && (string)btn8.Content == co && (string)btn9.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn1.Content == co && (string)btn4.Content == co && (string)btn7.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn2.Content == co && (string)btn5.Content == co && (string)btn8.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn3.Content == co && (string)btn6.Content == co && (string)btn9.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn1.Content == co && (string)btn5.Content == co && (string)btn9.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
-
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             else if ((string)btn3.Content == co && (string)btn5.Content == co && (string)btn7.Content == co)
             {
+                StopTimer(ref timer);
                 opnt.IsWinner = true;
                 plar.IsWinner = false;
                 opnt.Score++;
-                isWin();
+                isWin(ref gameIsEnd, ref gameIsStart);
+                return true;
             }
             GameTied(ref isTie, ref plar.IsWinner, ref opnt.IsWinner);
 
@@ -426,7 +455,7 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-        #region board is empty method
+        #region empty borad method
         private bool BoardIsEmpty()
         {
             if ((string)btn1.Content == "" && (string)btn2.Content == "" && (string)btn3.Content == "" &&
@@ -445,6 +474,7 @@ namespace IxIgul.UserControls
         #region buttons events
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            btn1.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -459,109 +489,118 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in boolean varible if there are game winner
+                while (true)
                 {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn1.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn1.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn1.IsEnabled = false;
 
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            btn2.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -576,108 +615,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn2.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn2.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn2.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            btn3.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -692,108 +740,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn3.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn3.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn3.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            btn4.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -808,108 +865,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn4.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn4.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn4.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
+            btn5.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -924,108 +990,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn5.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn5.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn5.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
+            btn6.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -1040,108 +1115,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn6.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn6.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn6.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
+            btn7.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -1156,108 +1240,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn7.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn7.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn7.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
+            btn8.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -1272,108 +1365,117 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn8.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn8.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn8.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
+            btn9.Content = plar.Shape;
             if (oponent)
             {
                 if (plar.IsPlay)
@@ -1388,103 +1490,111 @@ namespace IxIgul.UserControls
             }
             else if (oponent == false)
             {
-                if (level1)
+                bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+                while (true)
                 {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel1(ref opnt.Shape);
-                }
-                else if (level2)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level3)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level4)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level5)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level6)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level7)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level8)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level9)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level10)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
-                }
-                else if (level11)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel11(ref opnt.Shape);
-                }
-                else if (level12)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel12(ref opnt.Shape);
-                }
-                else if (level13)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel13(ref opnt.Shape);
-                }
-                else if (level14)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel14(ref opnt.Shape);
-                }
-                else if (level15)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel15(ref opnt.Shape);
-                }
-                else if (level16)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel16(ref opnt.Shape);
-                }
-                else if (level17)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel17(ref opnt.Shape);
-                }
-                else if (level18)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel18(ref opnt.Shape);
-                }
-                else if (level19)
-                {
-                    btn9.Content = plar.Shape;
-                    CpPlaceLevel19(ref opnt.Shape);
+                    if (somePlayerWon) // check if there are game winner
+                    {
+                        break; // go out of the loop for not allowing for cp to put shape if there are winner
+                    }
+                    if (dat.level1)
+                    {
+                        CpPlaceLevel1(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level2)
+                    {
+                        CpPlaceLevel2(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level3)
+                    {
+                        CpPlaceLevel3(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level4)
+                    {
+                        CpPlaceLevel4(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level5)
+                    {
+                        CpPlaceLevel5(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level6)
+                    {
+                        CpPlaceLevel6(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level7)
+                    {
+                        CpPlaceLevel7(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level8)
+                    {
+                        CpPlaceLevel8(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level9)
+                    {
+                        CpPlaceLevel9(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level10)
+                    {
+                        CpPlaceLevel10(ref plar.Shape, ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level11)
+                    {
+                        CpPlaceLevel11(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level12)
+                    {
+                        CpPlaceLevel12(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level13)
+                    {
+                        CpPlaceLevel13(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level14)
+                    {
+                        CpPlaceLevel14(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level15)
+                    {
+                        CpPlaceLevel15(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level16)
+                    {
+                        CpPlaceLevel16(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level17)
+                    {
+                        CpPlaceLevel17(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level18)
+                    {
+                        CpPlaceLevel18(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    else if (dat.level19)
+                    {
+                        CpPlaceLevel19(ref opnt.Shape);
+                        btn9.IsEnabled = false;
+                    }
+                    break;
                 }
             }
-            btn9.IsEnabled = false;
             CheckWinner(ref plar.Shape, ref opnt.Shape);
         }
         #endregion
@@ -2210,7 +2320,7 @@ namespace IxIgul.UserControls
 
         #endregion
         // cp logic
-        
+
         // menu bar logic
         #region menu bar
         private void New_Game_Click(object sender, RoutedEventArgs e)
@@ -2229,6 +2339,7 @@ namespace IxIgul.UserControls
         /// </summary>
         private void p2Play_Click(object sender, RoutedEventArgs e)
         {
+            StopTimer(ref timer);
             oponent = true; // allow p2 logic to happen
             ClearBoard(ref plar.Shape, ref opnt.Shape);
             MessageBoxResult result = MessageBox.Show("Choose the starting player\nyes - player1 start\nno - player2 start", "CHOOSE WHO PLAY FIRST",
@@ -2246,6 +2357,7 @@ namespace IxIgul.UserControls
             ResetScore(out plar.Score, out opnt.Score, out tieGame);
             Levels.Visibility = Visibility.Hidden; // hide levels option when cp not play
             txtLevels.Visibility = Visibility.Hidden; // hide levels text when cp not play
+            ResetAndStartTimer(ref counter, ref timer);
         }
 
         /// <summary>
@@ -2267,9 +2379,9 @@ namespace IxIgul.UserControls
         /// </summary>
         private void Level1_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 1"; // display the cp level in the text block
-            level1 = true; // allow level 1 logic to happen
+            dat.level1 = true; // allow level 1 logic to happen
             BegginerBackgroundColor(); // change screen background color
         }
 
@@ -2278,10 +2390,10 @@ namespace IxIgul.UserControls
         /// </summary>
         private void Level2_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 2"; // display the cp level in the text block
-            level2 = true; // allow level 2 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level2 = true; // allow level 2 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             BegginerBackgroundColor(); // change screen background color
         }
 
@@ -2290,10 +2402,10 @@ namespace IxIgul.UserControls
         /// </summary>
         private void Level3_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
+            StartNewGame(ref timer); // reset score
             txtLevels.Text = "Level 3"; // display the cp level in the text block
-            level3 = true; // allow level 3 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level3 = true; // allow level 3 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             BegginerBackgroundColor(); // change screen background color
         }
 
@@ -2302,10 +2414,10 @@ namespace IxIgul.UserControls
         /// </summary>
         private void Level4_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
+            StartNewGame(ref timer); // reset score
             txtLevels.Text = "Level 4"; // display the cp level in the text block
-            level4 = true; // allow level 4 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level4 = true; // allow level 4 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             BegginerBackgroundColor(); // change screen background color
         }
 
@@ -2314,10 +2426,10 @@ namespace IxIgul.UserControls
         /// </summary>
         private void Level5_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
+            StartNewGame(ref timer); // reset score
             txtLevels.Text = "Level 5"; // display the cp level in the text block
-            level5 = true; // allow level 5 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level5 = true; // allow level 5 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             BegginerBackgroundColor(); // change screen background color
         }
 
@@ -2326,120 +2438,117 @@ namespace IxIgul.UserControls
         /// </summary>
         private void Level6_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
+            StartNewGame(ref timer); // reset score
             txtLevels.Text = "Level 6"; // display the cp level in the text block
-            level6 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level6 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             AdvancedBackgroundColor(); // change screen background color
         }
 
         private void Level7_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
+            StartNewGame(ref timer); // reset score
             txtLevels.Text = "Level 7"; // display the cp level in the text block
-            level7 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level7 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             AdvancedBackgroundColor(); // change screen background color
         }
         private void Level8_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame(); // reset score
+            StartNewGame(ref timer); // reset score
             txtLevels.Text = "Level 8"; // display the cp level in the text block
-            level8 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level8 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             AdvancedBackgroundColor(); // change screen background color
         }
         private void Level9_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 9"; // display the cp level in the text block
-            level9 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level9 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             AdvancedBackgroundColor(); // change screen background color
         }
         private void Level10_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 10"; // display the cp level in the text block
-            level10 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level10 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             AdvancedBackgroundColor(); // change screen background color
         }
         private void Level11_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 11"; // display the cp level in the text block
-            level11 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level11 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             ExpertBackgroundColor(); // change screen background color
         }
         private void Level12_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 12"; // display the cp level in the text block
-            level12 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level12 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             ExpertBackgroundColor(); // change screen background color
         }
         private void Level13_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 13"; // display the cp level in the text block
-            level13 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level13 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             ExpertBackgroundColor(); // change screen background color
         }
         private void Level14_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 14"; // display the cp level in the text block
-            level14 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level14 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             ExpertBackgroundColor(); // change screen background color
         }
         private void Level15_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 15"; // display the cp level in the text block
-            level15 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level15 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             ExpertBackgroundColor(); // change screen background color
         }
         private void Level16_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 16"; // display the cp level in the text block
-            level16 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level16 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             LegendaryBackgroundColor(); // change screen background color
         }
         private void Level17_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 17"; // display the cp level in the text block
-            level17 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level17 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             LegendaryBackgroundColor(); // change screen background color
         }
         private void Level18_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 18"; // display the cp level in the text block
-            level18 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level18 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             LegendaryBackgroundColor(); // change screen background color
         }
         private void Level19_Click(object sender, RoutedEventArgs e)
         {
-            StartNewGame();
+            StartNewGame(ref timer);
             txtLevels.Text = "Level 19"; // display the cp level in the text block
-            level19 = true; // allow level 6 logic to happen
-            level1 = false; // not allow to level 1 logic to happen
+            dat.level19 = true; // allow level 6 logic to happen
+            dat.level1 = false; // not allow to level 1 logic to happen
             LegendaryBackgroundColor(); // change screen background color
         }
-
-
-
         #endregion
 
 
@@ -2541,7 +2650,6 @@ namespace IxIgul.UserControls
         }
         #endregion
 
-
         #region Choose Shape
         private void O_Shape_Click(object sender, RoutedEventArgs e)
         {
@@ -2629,5 +2737,39 @@ namespace IxIgul.UserControls
 
         #endregion
         //menu bar logic
+
+        // timer
+        #region Timer
+        private void StartTimer(ref System.Timers.Timer t)
+        {
+            t.Interval = 1000;
+            t.Elapsed += OnTimerElapsed;
+            t.Start();
+        }
+        private void StopTimer(ref System.Timers.Timer t)
+        {
+            t.Stop();
+        }
+        private void ResetAndStartTimer(ref int count, ref System.Timers.Timer t)
+        {
+            count = 0; // reset counter to 0
+
+            t.Stop(); // stop timer
+            t.Interval = 1000; // reset timer interval to 1 second at a time
+            t.Start(); // start timer
+
+            gameTimer.Text = " Seconds passed - " + count; // update the UI
+        }
+
+        private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
+        {
+            counter++;
+            gameTimer.Dispatcher.Invoke(() =>
+            {
+                gameTimer.Text = "Seconds passed - " + counter;
+            });
+        }
+        #endregion
+        // timer
     }
 }

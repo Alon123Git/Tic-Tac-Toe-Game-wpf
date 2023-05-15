@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Alon\Desktop\IxIgul\IxIgul\obj\Debug\net6.0-windows\
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\
 IxIgul
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\Alon\Desktop\IxIgul\IxIgul\App.xaml
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\App.xaml
 3297242556
 
-81483103286
-194-1797456590
+71492091780
+233-584451959
 MainWindow.xaml;UserControls\Board.xaml;UserControls\GameLogic.xaml;
 
 False

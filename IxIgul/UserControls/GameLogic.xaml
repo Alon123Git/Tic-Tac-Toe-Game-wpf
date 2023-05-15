@@ -36,6 +36,21 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
+        <!--timer-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="gameTimer" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" Text="Timer" FontSize="20">
+            </TextBlock>
+        </Grid>
+
+        <!--timer-->
+
         <!--score and-->
         <Grid Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -56,6 +71,7 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
             <!--main title-->
             <TextBlock Grid.Column="6" Grid.ColumnSpan="3" Text="SCORE"
                        FontSize="20" HorizontalAlignment="Left"
