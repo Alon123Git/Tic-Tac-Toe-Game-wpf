@@ -10,7 +10,7 @@ namespace IxIgul.Players
 {
     public class Opponent : data
     {
-        public bool IsPlay = false;
+        public  bool IsPlay = false;
         public bool IsWinner = false;
         public int Score = 0;
         public string Shape = "X";

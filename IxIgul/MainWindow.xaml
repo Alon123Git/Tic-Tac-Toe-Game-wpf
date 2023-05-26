@@ -4,12 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IxIgul"
-        xmlns:logic="clr-namespace:IxIgul.UserControls"
-        xmlns:board="clr-namespace:IxIgul.UserControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -18,18 +23,17 @@
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
-        <!--logic-->
-        <Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
-            <logic:GameLogic />
+        <Grid Grid.Column="1" Grid.ColumnSpan="3" Background="LightGreen">
+        <TextBlock Text="Home Page"
+                   FontSize="50" HorizontalAlignment="Center"></TextBlock>
         </Grid>
-        <!--logic-->
 
-        <!--board--><!--
-        <Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
-            <board:Board />
-        </Grid>
-        --><!--board-->
+        <Button Grid.Row="3" Grid.Column="2" Background="LightBlue"
+                Content="vs PLAYER 2" FontSize="30" Click="Game_Click"></Button>
+        <Button Grid.Row="5" Grid.Column="2" Background="LightBlue"
+                Content="vs CP" FontSize="40" Click="Game_Click"></Button>
     </Grid>
 </Window>

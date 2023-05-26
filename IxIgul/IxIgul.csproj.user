@@ -7,10 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UserControls\Board.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="UserControls\GameLogic.xaml.cs">
+    <Compile Update="Windows\GamePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -18,10 +15,7 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserControls\Board.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="UserControls\GameLogic.xaml">
+    <Page Update="Windows\GamePage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

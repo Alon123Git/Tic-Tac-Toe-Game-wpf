@@ -1,0 +1,257 @@
+﻿<Window x:Class="IxIgul.Windows.HomePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IxIgul.Windows"
+        mc:Ignorable="d"
+        Title="HomePage" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="buttonsStyle">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="80"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="Screen" Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!--timer-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="gameTimer" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" Text="Timer" FontSize="20">
+            </TextBlock>
+        </Grid>
+
+        <!--timer-->
+
+        <!--score and-->
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!--main title-->
+            <TextBlock Grid.Column="6" Grid.ColumnSpan="3" Text="SCORE"
+                       FontSize="20" HorizontalAlignment="Left"
+                       VerticalAlignment="Center"></TextBlock>
+            <!--main title-->
+
+            <!--second title-->
+            <TextBlock Grid.Column="5" Grid.Row="1" Text="player1"
+                       FontSize="15" HorizontalAlignment="Right"></TextBlock>
+
+            <TextBlock Grid.Column="7" Grid.Row="1" Text="player2"
+                       FontSize="18" HorizontalAlignment="Left"></TextBlock>
+
+            <TextBlock Grid.Column="6" Grid.Row="1" 
+                       Text="Tie" FontSize="15" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top">
+            </TextBlock>
+            <!--second title-->
+
+            <!--score number-->
+            <TextBlock x:Name="Player1Score" Grid.Column="5" 
+                   Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                   Text="0" FontSize="18"></TextBlock>
+
+            <TextBlock x:Name="tieScore" Grid.Row="2" Grid.Column="6" 
+                       Text="0" FontSize="18" VerticalAlignment="Top" 
+                       HorizontalAlignment="Center" >
+            </TextBlock>
+
+            <TextBlock x:Name="Player2Score" Grid.Column="7" 
+                   Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                   Text="0" FontSize="15"></TextBlock>
+            <!--score number-->
+
+            <!--rectengles-->
+            <Rectangle x:Name="scoreRec1" Grid.Column="5" Grid.RowSpan="3"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Fill="LightSlateGray" Height="180" Width="10"></Rectangle>
+            <Rectangle x:Name="scoreRec2"  Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="3" 
+                       HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                       Height="10" Width="240" Fill="LightSlateGray"></Rectangle>
+
+        </Grid>
+        <!--score-->
+
+        <!--cp levels-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="txtLevels" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" FontSize="30"
+                       Text="Levels">
+            </TextBlock>
+        </Grid>
+        <!--cp levels-->
+
+        <!--menu bar-->
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <Menu VerticalAlignment="Top">
+                <MenuItem Header="Exit" Click="Exit_Click" />
+                <MenuItem Header="New Game" Click="New_Game_Click" />
+                <MenuItem Header="options">
+                    <MenuItem Header="Choose Oponent">
+                        <MenuItem Header="p2" Click="P2Play_Click"/>
+                        <MenuItem Header="cp" Click="CpPlay_Click" />
+                    </MenuItem>
+                    <MenuItem x:Name="Levels" Header="Difficulty Level">
+                        <MenuItem Header="Beginner levels">
+                            <MenuItem Header="Level 1" Click="Level1_Click" />
+                            <MenuItem Header="Level 2" Click="Level2_Click" />
+                            <MenuItem Header="Level 3" Click="Level3_Click" />
+                            <MenuItem Header="Level 4" Click="Level4_Click" />
+                            <MenuItem Header="Level 5" Click="Level5_Click" />
+                        </MenuItem>
+                        <MenuItem Header="advanced level">
+                            <MenuItem Header="Level 6" Click="Level6_Click" />
+                            <MenuItem Header="Level 7" Click="Level7_Click" />
+                            <MenuItem Header="Level 8" Click="Level8_Click" />
+                            <MenuItem Header="Level 9" Click="Level9_Click" />
+                            <MenuItem Header="Level 10" Click="Level10_Click" />
+                        </MenuItem>
+                        <MenuItem Header="Expert level">
+                            <MenuItem Header="Level 11" Click="Level11_Click" />
+                            <MenuItem Header="Level 12" Click="Level12_Click" />
+                            <MenuItem Header="Level 13" Click="Level13_Click" />
+                            <MenuItem Header="Level 14" Click="Level14_Click" />
+                            <MenuItem Header="Level 15" Click="Level15_Click" />
+                        </MenuItem>
+                        <MenuItem Header="Legendary level">
+                            <MenuItem Header="Level 16" Click="Level16_Click" />
+                            <MenuItem Header="Level 17" Click="Level17_Click" />
+                            <MenuItem Header="Level 18" Click="Level18_Click" />
+                            <MenuItem Header="Level 19" Click="Level19_Click" />
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Choose Shape">
+                        <MenuItem Header="O" Click="O_Shape_Click" />
+                        <MenuItem Header="X" Click="X_Shape_Click" />
+                    </MenuItem>
+                    <MenuItem Header="Choose shapes color">
+                        <MenuItem Header="Blue" Click="Blue_shapes_Click"/>
+                        <MenuItem Header="Green" Click="Green_shapes_Click" />
+                        <MenuItem Header="Yellow" Click="Yellow_shapes_Click" />
+                        <MenuItem Header="Red" Click="Red_shapes_Click" />
+                        <MenuItem Header="Black" Click="Black_shapes_Click" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <!--menu bar-->
+
+        <!--board-->
+        <Rectangle x:Name="rec1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+                    Height="30" VerticalAlignment="top" Fill="Gray" />
+        <Rectangle x:Name="rec2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                    Height="30" VerticalAlignment="top" Fill="Gray" />
+        <Rectangle x:Name="rec3" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" 
+                   Width="30" Height="992" VerticalAlignment="Bottom" HorizontalAlignment="Left" Fill="Gray"/>
+        <Rectangle x:Name="rec4" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" 
+                   Width="30" Height="992" VerticalAlignment="Bottom" HorizontalAlignment="Left" Fill="Gray"/>
+        <!--board-->
+
+        <!--buttons-->
+        <Button x:Name="btn1" Click="Button_Click_1" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn2" Grid.Column="1" Click="Button_Click_2" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn3" Grid.Column="2" Click="Button_Click_3" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn4" Grid.Row="1" Click="Button_Click_4" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn5" Grid.Row="1" Grid.Column="1" Click="Button_Click_5" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn6" Grid.Row="1" Grid.Column="2" Click="Button_Click_6" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn7" Grid.Row="2" Click="Button_Click_7" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn8" Grid.Row="2" Grid.Column="1" Click="Button_Click_8" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn9" Grid.Row="2" Grid.Column="2" Click="Button_Click_9" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <!--line if there are winnder-->
+
+        <Rectangle x:Name="rl1" Grid.Row="1" Grid.ColumnSpan="3" Width="1500" Height="20"
+               Fill="Red"  RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" >
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="30"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="rl2" Grid.Row="1" Grid.ColumnSpan="3" Width="1500" Height="20"
+               Fill="Red" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" >
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-30"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="rl3" Grid.RowSpan="3" Width="20" Height="900" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl4" Grid.Column="1" Grid.RowSpan="3" Width="20" Height="900" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl5" Grid.Column="2" Grid.RowSpan="3" Width="20" Height="900" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl6" Grid.ColumnSpan="3" Width="1400" Height="20" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl7" Grid.Row="1" Grid.ColumnSpan="3" Width="1400" Height="20" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl8" Grid.Row="2" Grid.ColumnSpan="3" Width="1400" Height="20" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <!--line if there are winnder-->
+    </Grid>
+</Window>

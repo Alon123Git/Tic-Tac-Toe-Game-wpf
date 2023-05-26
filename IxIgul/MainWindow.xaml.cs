@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using IxIgul.Windows;
+using System.Windows;
 
 namespace IxIgul
 {
@@ -10,6 +11,13 @@ namespace IxIgul
         public MainWindow()
         {
             InitializeComponent();           
-        }                
+        }
+
+        private void Game_Click(object sender, RoutedEventArgs e)
+        {
+            HomePage hp = new();
+            hp.Show();
+            Close();
+        }
     }
 }

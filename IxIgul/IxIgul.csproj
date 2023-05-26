@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Style\" />
+    <Compile Remove="Style\**" />
+    <EmbeddedResource Remove="Style\**" />
+    <None Remove="Style\**" />
+    <Page Remove="Style\**" />
   </ItemGroup>
 
   <ItemGroup>
