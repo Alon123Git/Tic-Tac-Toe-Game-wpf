@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IxIgul"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
-    <Grid>
+        Title="MainWindow" Height="1000" Width="1000">
+    <Grid Background="LightYellow">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -27,13 +27,17 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1" Grid.ColumnSpan="3" Background="LightGreen">
-        <TextBlock Text="Home Page"
+            <TextBlock Text="TIC TAC TOE"
                    FontSize="50" HorizontalAlignment="Center"></TextBlock>
         </Grid>
 
-        <Button Grid.Row="3" Grid.Column="2" Background="LightBlue"
-                Content="vs PLAYER 2" FontSize="30" Click="Game_Click"></Button>
-        <Button Grid.Row="5" Grid.Column="2" Background="LightBlue"
-                Content="vs CP" FontSize="40" Click="Game_Click"></Button>
+        <Button Grid.Row="3" Grid.Column="2"
+                FontSize="30" Click="Cp_Click" Background="LightCoral">
+            <Image Source="/Images/computer.png" Width="200" />
+        </Button>
+        <Button Grid.Row="5" Grid.Column="2"
+                FontSize="30" Click="Player2_Click" Background="LightBlue">
+            <Image Source="/Images/playerVSplayer.png" Width="200" Visibility="Visible"/>
+        </Button>
     </Grid>
 </Window>

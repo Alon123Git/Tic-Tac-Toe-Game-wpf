@@ -13,10 +13,17 @@ namespace IxIgul
             InitializeComponent();           
         }
 
-        private void Game_Click(object sender, RoutedEventArgs e)
+        private void Cp_Click(object sender, RoutedEventArgs e)
         {
-            HomePage hp = new();
-            hp.Show();
+            CpLevelsWindow cpl = new();
+            cpl.Show();
+            Close();
+        }
+
+        private void Player2_Click(object sender, RoutedEventArgs e)
+        {
+            Player2Page p2 = new();
+            p2.Show();
             Close();
         }
     }

@@ -1,0 +1,241 @@
+﻿<Window x:Class="IxIgul.Windows.CpPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IxIgul.Windows"
+        mc:Ignorable="d"
+        Title="CpPage" Height="1000" Width="1000">
+
+    <!--style-->
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="buttonsStyle">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="80"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <!--style-->
+    <Grid x:Name="Screen" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!--menu bar-->
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <Menu VerticalAlignment="Top">
+                <MenuItem Header="Exit" Click="Exit_Click" />
+                <MenuItem Header="Home" Click="Home_Click" />
+                <MenuItem Header="New Game" Click="New_Game_Click" />
+                <MenuItem Header="LEVELS" Click="Levels_Click" />
+                <MenuItem Header="options">
+                    <MenuItem Header="Choose Shape">
+                        <MenuItem Header="O" Click="O_Shape_Click" />
+                        <MenuItem Header="X" Click="X_Shape_Click" />
+                    </MenuItem>
+                    <MenuItem Header="Choose shapes color">
+                        <MenuItem Header="Blue" Click="Blue_shapes_Click"/>
+                        <MenuItem Header="Green" Click="Green_shapes_Click" />
+                        <MenuItem Header="Yellow" Click="Yellow_shapes_Click" />
+                        <MenuItem Header="Red" Click="Red_shapes_Click" />
+                        <MenuItem Header="Black" Click="Black_shapes_Click" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <!--menu bar-->
+
+        <!--title-->
+        <Grid Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="txbTitle" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                   FontSize="30" Text="LEVELS NUMBER"></TextBlock>
+        </Grid>
+        <!--title-->
+
+        <!--board-->
+        <Rectangle x:Name="rec1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+                    Height="30" VerticalAlignment="top" Fill="Gray" />
+        <Rectangle x:Name="rec2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                    Height="30" VerticalAlignment="top" Fill="Gray" />
+        <Rectangle x:Name="rec3" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" 
+                   Width="30" Height="992" VerticalAlignment="Bottom" HorizontalAlignment="Left" Fill="Gray"/>
+        <Rectangle x:Name="rec4" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" 
+                   Width="30" Height="992" VerticalAlignment="Bottom" HorizontalAlignment="Left" Fill="Gray"/>
+        <!--board-->
+
+        <!--timer-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="gameTimer" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" Text="Timer" FontSize="20">
+            </TextBlock>
+        </Grid>
+        <!--timer-->
+
+        <!--score-->
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!--main title-->
+            <TextBlock Grid.Column="6" Grid.ColumnSpan="3" Text="SCORE"
+                       FontSize="20" HorizontalAlignment="Left"
+                       VerticalAlignment="Center"></TextBlock>
+            <!--main title-->
+
+            <!--second title-->
+            <TextBlock Grid.Column="5" Grid.Row="1" Text="player1"
+                       FontSize="15" HorizontalAlignment="Right"></TextBlock>
+
+            <TextBlock Grid.Column="7" Grid.Row="1" Text="player2"
+                       FontSize="18" HorizontalAlignment="Left"></TextBlock>
+
+            <TextBlock Grid.Column="6" Grid.Row="1" 
+                       Text="Tie" FontSize="15" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top">
+            </TextBlock>
+            <!--second title-->
+
+            <!--score number-->
+            <TextBlock x:Name="Player1Score" Grid.Column="5" 
+                   Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                   Text="0" FontSize="18"></TextBlock>
+
+            <TextBlock x:Name="tieScore" Grid.Row="2" Grid.Column="6" 
+                       Text="0" FontSize="18" VerticalAlignment="Top" 
+                       HorizontalAlignment="Center" >
+            </TextBlock>
+
+            <TextBlock x:Name="Player2Score" Grid.Column="7" 
+                   Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                   Text="0" FontSize="15"></TextBlock>
+            <!--score number-->
+
+            <!--rectengles-->
+            <Rectangle x:Name="scoreRec1" Grid.Column="5" Grid.RowSpan="3"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Fill="LightSlateGray" Height="180" Width="10"></Rectangle>
+            <Rectangle x:Name="scoreRec2"  Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="3" 
+                       HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                       Height="10" Width="240" Fill="LightSlateGray"></Rectangle>
+            <!--rectengles-->
+        </Grid>
+        <!--score-->
+
+        <!--cp levels-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="txtLevels" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" FontSize="30"
+                       Text="Levels">
+            </TextBlock>
+        </Grid>
+        <!--cp levels-->
+
+        <!--buttons-->
+        <Button x:Name="btn1" Click="Button_Click_1" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn2" Grid.Column="1" Click="Button_Click_2" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn3" Grid.Column="2" Click="Button_Click_3" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn4" Grid.Row="1" Click="Button_Click_4" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn5" Grid.Row="1" Grid.Column="1" Click="Button_Click_5" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn6" Grid.Row="1" Grid.Column="2" Click="Button_Click_6" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn7" Grid.Row="2" Click="Button_Click_7" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn8" Grid.Row="2" Grid.Column="1" Click="Button_Click_8" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <Button x:Name="btn9" Grid.Row="2" Grid.Column="2" Click="Button_Click_9" 
+                Style="{StaticResource buttonsStyle}"></Button>
+        <!--line if there are winnder-->
+
+        <Rectangle x:Name="rl1" Grid.Row="1" Grid.ColumnSpan="3" Width="1500" Height="20"
+               Fill="Red"  RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" >
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="30"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="rl2" Grid.Row="1" Grid.ColumnSpan="3" Width="1500" Height="20"
+               Fill="Red" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" >
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-30"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="rl3" Grid.RowSpan="3" Width="20" Height="900" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl4" Grid.Column="1" Grid.RowSpan="3" Width="20" Height="900" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl5" Grid.Column="2" Grid.RowSpan="3" Width="20" Height="900" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl6" Grid.ColumnSpan="3" Width="1400" Height="20" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl7" Grid.Row="1" Grid.ColumnSpan="3" Width="1400" Height="20" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <Rectangle x:Name="rl8" Grid.Row="2" Grid.ColumnSpan="3" Width="1400" Height="20" Fill="Red"
+                   Visibility="Collapsed"></Rectangle>
+        <!--line if there are winnder-->
+    </Grid>
+</Window>

@@ -222,7 +222,6 @@ C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\bin\Debug\net6.0-windows\runtime
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\IxIgul.csproj.AssemblyReference.cache
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\MainWindow.g.cs
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\App.g.cs
-C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\IxIgul_MarkupCompile.cache
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\IxIgul_MarkupCompile.lref
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\MainWindow.baml
@@ -237,5 +236,9 @@ C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\refint\
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\IxIgul.pdb
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\IxIgul.genruntimeconfig.cache
 C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\ref\IxIgul.dll
-C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\GamePage.g.cs
-C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\GamePage.baml
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\CpPage.g.cs
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\Player2Page.g.cs
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\CpLevelsWindow.g.cs
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\CpLevelsWindow.baml
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\CpPage.baml
+C:\Users\Alon\Desktop\IxIgul_NO_DATABASE\IxIgul\obj\Debug\net6.0-windows\Windows\Player2Page.baml
