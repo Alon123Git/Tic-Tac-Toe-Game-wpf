@@ -36,6 +36,9 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
+        <TextBlock x:Name="txtInstruction" Grid.Row="1" Grid.Column="1" Text="Press On The New Game In The Menu Bar"
+                   FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
+
         <!--menu bar-->
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
             <Menu VerticalAlignment="Top">
