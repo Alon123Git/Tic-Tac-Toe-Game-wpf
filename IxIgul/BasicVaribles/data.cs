@@ -2,6 +2,7 @@
 {
     public class data
     {
+        #region varibles
         public bool IsPlay = false;
         public bool IsWinner = false;
         public int Score = 0;
@@ -25,6 +26,9 @@
         public bool level17 = false;
         public bool level18 = false;
         public bool level19 = false;
+        #endregion
+
+        #region constructors
         public data(bool isWinner, int score, bool isPlay, string shape, bool lvl1, bool lvl2, bool lvl3, bool lvl4, bool lvl5,
             bool lvl6, bool lvl7, bool lvl8, bool lvl9, bool lvl10, bool lvl11, bool lvl12, bool lvl13, bool lvl14, bool lvl15,
             bool lvl16, bool lvl17, bool lvl18, bool lvl19)
@@ -63,5 +67,6 @@
         }
 
         public data() { }
+        #endregion
     }
 }

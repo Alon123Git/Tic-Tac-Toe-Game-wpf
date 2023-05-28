@@ -7,10 +7,12 @@ namespace IxIgul.Windows
     /// </summary>
     public partial class CpLevelsWindow : Window
     {
+        #region constructor
         public CpLevelsWindow()
         {
             InitializeComponent();
         }
+        #endregion
 
         #region Levels Events
         private void Lvl1_Click(object sender, RoutedEventArgs e)

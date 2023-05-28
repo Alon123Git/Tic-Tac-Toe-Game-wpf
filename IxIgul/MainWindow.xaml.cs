@@ -7,12 +7,15 @@ namespace IxIgul
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {  
+    {
+        #region constructor
         public MainWindow()
         {
             InitializeComponent();           
         }
+        #endregion
 
+        #region buttons events
         private void Cp_Click(object sender, RoutedEventArgs e)
         {
             CpLevelsWindow cpl = new();
@@ -26,5 +29,6 @@ namespace IxIgul
             p2.Show();
             Close();
         }
+        #endregion
     }
 }
