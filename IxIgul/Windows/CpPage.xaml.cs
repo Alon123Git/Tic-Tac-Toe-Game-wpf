@@ -585,17 +585,6 @@ namespace IxIgul.Windows
         #endregion
         // pleyer2 logic
 
-        #region check if there are tie method
-        private static bool CheckIfBoolIsTie(ref bool tie)
-        {
-            if (tie)
-            {
-                tie = !tie;
-            }
-            return tie;
-        }
-        #endregion
-
         // buttons event
         #region buttons events
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -604,11 +593,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in boolean varible if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new game
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -711,6 +704,10 @@ namespace IxIgul.Windows
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
             CheckWinner(ref plar.Shape, ref opnt.Shape);
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -719,11 +716,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new game
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -825,7 +826,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -834,11 +839,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new game
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -940,7 +949,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -949,11 +962,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new game
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -1055,7 +1072,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape);
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -1064,11 +1085,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new 
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -1170,7 +1195,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
@@ -1179,11 +1208,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new 
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -1285,7 +1318,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape);
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
@@ -1294,11 +1331,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
                 {
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new 
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
+                {
                     isTie = false;
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -1400,7 +1441,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape);
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
@@ -1409,11 +1454,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new 
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -1515,7 +1564,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape);
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
@@ -1524,11 +1577,15 @@ namespace IxIgul.Windows
             bool somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape); // store in the boolean if there are game winner
             while (true)
             {
-                //CheckIfBoolIsTie(ref isTie);
-                if (somePlayerWon || isTie) // check if there are game winner
+                if (somePlayerWon) // check if there are game winner
+                {
+                    FollowingStartingPlayerMessage(); // start a new 
+                    break; // go out of the loop for not allowing for cp to put shape if there are winner
+                }
+                if (isTie)
                 {
                     isTie = false;
-                    FollowingStartingPlayerMessage();
+                    FollowingStartingPlayerMessage(); // start a new game
                     break; // go out of the loop for not allowing for cp to put shape if there are winner
                 }
                 if (SelectedLevel == 1)
@@ -1630,7 +1687,11 @@ namespace IxIgul.Windows
             }
             plar.IsPlay = !plar.IsPlay; // change turn
             opnt.IsPlay = !opnt.IsPlay; // change turn
-            CheckWinner(ref plar.Shape, ref opnt.Shape);
+            somePlayerWon = CheckWinner(ref plar.Shape, ref opnt.Shape);
+            if (somePlayerWon) // check if there are game winner
+            {
+                FollowingStartingPlayerMessage(); // start a new game
+            }
         }
         #endregion
         // buttons event

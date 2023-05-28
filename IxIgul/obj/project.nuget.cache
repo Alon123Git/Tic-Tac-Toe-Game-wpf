@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vyiEa8c3lUtAaQY2TtHTQWYyHGw5a/khesSqs8y7iPsoN6fQs696TJtv8k2Vqx0G8oTfF5x2lG6umRJQuRDoIQ==",
+  "dgSpecHash": "7h6yyfNgtrxq3JJKU1SwDgaso48EgTyIoxO28+O1Kk9Q4YijwNkAdzgZp2d0wMxja3Ucwgul4Kq0l6qBy0d0Zw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alon\\Desktop\\IxIgul_NO_DATABASE\\IxIgul\\IxIgul.csproj",
+  "projectFilePath": "C:\\Users\\Alon\\Desktop\\IxIguL_Copy\\IxIgul\\IxIgul.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alon\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Alon\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

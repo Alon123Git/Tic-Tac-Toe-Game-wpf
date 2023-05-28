@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Alon\\Desktop\\IxIgul_NO_DATABASE\\IxIgul\\IxIgul.csproj": {}
+    "C:\\Users\\Alon\\Desktop\\IxIguL_Copy\\IxIgul\\IxIgul.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Alon\\Desktop\\IxIgul_NO_DATABASE\\IxIgul\\IxIgul.csproj": {
+    "C:\\Users\\Alon\\Desktop\\IxIguL_Copy\\IxIgul\\IxIgul.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alon\\Desktop\\IxIgul_NO_DATABASE\\IxIgul\\IxIgul.csproj",
+        "projectUniqueName": "C:\\Users\\Alon\\Desktop\\IxIguL_Copy\\IxIgul\\IxIgul.csproj",
         "projectName": "IxIgul",
-        "projectPath": "C:\\Users\\Alon\\Desktop\\IxIgul_NO_DATABASE\\IxIgul\\IxIgul.csproj",
+        "projectPath": "C:\\Users\\Alon\\Desktop\\IxIguL_Copy\\IxIgul\\IxIgul.csproj",
         "packagesPath": "C:\\Users\\Alon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alon\\Desktop\\IxIgul_NO_DATABASE\\IxIgul\\obj\\",
+        "outputPath": "C:\\Users\\Alon\\Desktop\\IxIguL_Copy\\IxIgul\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
